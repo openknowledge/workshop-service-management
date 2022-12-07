@@ -56,6 +56,15 @@ skaffold run
 
 We observed that sometimes it can happen, that the ingress-operator is not installed quick enough.
 If that happens just rerun the skaffold run command after it failed the first time.
+In this case also check, if the ingresses are created properly. It may be that the 
+Grafana and Prometheus ingresses are missing, because the operator helm chart was installed, but 
+not the ingresses because of the missing Ingress-Operator.
+If that happened, uninstall the helm chart and run `skaffold run` again to reinstall the helm chart.
+
+```shell
+    helm uninstall -n observability kube-prometheus-stack
+    skaffold run
+```
 
 ### Accessing the Applications
 
@@ -73,6 +82,9 @@ To access them via a Domain Name add those entries to the /etc/hosts file.
 127.0.0.1       billing.localhost
 127.0.0.1       customer.localhost
 127.0.0.1       delivery.localhost
+127.0.0.1       prometheus.localhost
+127.0.0.1       grafana.localhost
+127.0.0.1       jaeger.localhost
 ```
 
 #### NodePorts
@@ -85,6 +97,9 @@ For Address Validation: http://localhost:30080
 For Billing: http://localhost:30081
 For Customer: http://localhost:30082
 For Delivery: http://localhost:30083
+For Prometheus: http://localhost:30090
+For Grafana: http://localhost:30030
+For Jaeger: http://localhost:30091
 ```
 
 #### Port-Forwarding
@@ -96,6 +111,49 @@ access the applications.
 
 To check what is running on the cluster, you can use kubectl to navigate through the cluster.
 k9s.io is also a nice tool to do so.
+
+## "Fixing" the missing sidecar container for OpenTelemetry
+
+After everything has been installed on the cluster via Skaffold, you will notice that there is
+only one container in each pod for the micro-services (address-validation, billing, customer, delivery).
+This is because the Operator did not have the chance to boot up properly, before skaffold applied
+the kustomize files to the cluster.
+
+To get the sidecars for the pods injected, just delete the pods. The deployment will be triggered
+automatically and the pods will be recreated with the sidecar containers, because the operator should
+be up and running by then.
+
+## Accessing the Grafana Dashboard
+
+To access the Grafana Dashboard, you can use the following credentials: admin/admin
+Skip the password change and you will be redirected to the dashboard.
+
+In the Dashboard list, search for "Tracing". That is our pre-build Dashboard, which
+visualizes the 4 Services with their traces, and the corresponding logs.
+
+To actually see traffic on that dashboard, trigger some requests to the services.
+For example: 
+    
+```shell
+curl --location --request GET 'localhost:30083/delivery-addresses/0815'
+```
+
+Or to use multiple microservices to see the propagation you can change the address with a POST
+
+```shell
+curl --location --request POST 'localhost:30083/delivery-addresses/0815' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "city": "26122 Oldenburg",
+        "recipient": "Max Mustermann",
+        "street": {
+        "name": "Musterstrasse",
+        "number": "22"
+    }
+}'
+```
+
+Now you should see some traces in the Grafana Tracing Dashboard.
 
 ## Cleaning up the cluster
 
