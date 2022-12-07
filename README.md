@@ -1,56 +1,114 @@
-# Running the samples of the workshop
+# Workshop Service Management
 
-The samples run on Minikube.
+This repository contains samples for the workshop Service Management.
 
-## Install Kubernetes
+## Demos
 
-Install Kubernetes via Minikube. See the instructions below.
+You find the demos in the corresponding branches
 
-## Information for Windows users
+* [Demo Client](https://github.com/openknowledge/workshop-api-management/tree/client)
+* [Demo Backstage](https://github.com/openknowledge/workshop-api-management/tree/backstage)
+* [Demo Monitoring](https://github.com/openknowledge/workshop-api-/tree/monitoring)
+* [Demo Versioning V1.0](https://github.com/openknowledge/workshop-api-management/tree/versioning-v1.0)
+* [Demo Versioning V1.1](https://github.com/openknowledge/workshop-api-management/tree/versioning-v1.1)
+* [Demo Versioning V2.0](https://github.com/openknowledge/workshop-api-management/tree/versioning-v2.0)
 
-Make sure you're using PowerShell or Bash! Do not use _cmd_!
+## Setting up a Cluster
 
-## Important warning
+Create a Kubernetes Cluster on your machine:
 
-If you are regularly working with kubernetes and `kubectl` it would be wise to create a backup copy of your kubeconfig file.
+### KinD
+If you want to use a Kubernetes in Docker Cluster, you can use [KinD](https://kind.sigs.k8s.io/docs/user/quick-start).
 
-This file is located
+To do so create a cluster by executing the following command:
 
-- on macOS: `~/.kube/config`
-- on Linux: `~/.kube/config`
-- on Windows: `%UserProfile%/.kube/config`
+```shell
+kind create cluster --config=./deployment/cluster-setup/kind-config.yml --name=workshop-service-mngmt-cluster
+```
 
-Minikube should only add a kubectl context configuration and should not mess with existing contexts...but you never know...
+Check that context is set to kind-workshop-service-mgmt-cluster:
 
-## Minikube
+```shell
+kubectl config current-context
+```
 
-Install the dependencies:
+If the context was not set automatically, but the cluster is running in the docker environment 
+set the context manually:
 
-- Docker 3.3: <https://docs.docker.com/get-docker/>
-- Minikube 1.20.0: <https://minikube.sigs.k8s.io/docs/start/>
-- kubectl: either via Minikube (<https://minikube.sigs.k8s.io/docs/handbook/kubectl/>) or directly (<https://kubernetes.io/docs/tasks/tools/>)
+```shell
+kubectl config set-context kind-workshop-service-mgmt-cluster
+```
+## Deploying to the Cluster via Skaffold
 
-Start Docker first, then start Minikube. On Windows you'll need to use an administative Terminal to do so.
+To deploy the applications to the cluster, we use [Skaffold](https://skaffold.dev/).
 
-`minikube start --container-runtime=docker --driver=docker --insecure-registry "10.0.0.0/24"`
+Skaffold will build the required images and deploy them to the cluster via kustomize.
+If the cluster created, Skaffold and kubectl are installed, we are ready to go.
 
-### Configure Docker registry
+To deploy the applications to the cluster, execute the following command in the root directory 
+of this repository:
 
-Enable registry addon:
+```shell
+skaffold run
+```
 
-`minikube addons enable registry`
+### Known Issues with the Ingress Operator
 
-In order to push images which start with "http://localhost:5000/" to Kubernete's own registry, you need to run:
+We observed that sometimes it can happen, that the ingress-operator is not installed quick enough.
+If that happens just rerun the skaffold run command after it failed the first time.
 
-`docker run --rm -it --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:$(minikube ip):5000"`
+### Accessing the Applications
 
-This container needs to run the whole time during you run the samples!
+To access the Applications we can either use the ingresses that are deployed to the cluster or
+access them via the exposed NodePort Services. Port-Forwarding is also an option, but not
+necessary.
 
-### Troubleshooting (macOS)
+#### Ingresses
 
-If something does not work as expected, try to delete Minikube:
+To access them via a Domain Name add those entries to the /etc/hosts file.
+(You will need admin rights to do so)
 
-Remove the binary: `sudo rm -rf /usr/local/bin/minikube`
+```
+127.0.0.1       address-validation.localhost
+127.0.0.1       billing.localhost
+127.0.0.1       customer.localhost
+127.0.0.1       delivery.localhost
+```
 
-Remove the config files: `sudo rm -rf ~/.minikube`
+#### NodePorts
 
+If you don't have admin rights or do not want to change the /etc/hosts file, the applications
+can be accessed via the exposed NodePorts with the following assigned ports:
+
+```
+For Address Validation: http://localhost:30080
+For Billing: http://localhost:30081
+For Customer: http://localhost:30082
+For Delivery: http://localhost:30083
+```
+
+#### Port-Forwarding
+
+If for whatever reason both options above are not working, you can also use port-forwarding to
+access the applications.
+
+### Check what is running
+
+To check what is running on the cluster, you can use kubectl to navigate through the cluster.
+k9s.io is also a nice tool to do so.
+
+## Cleaning up the cluster
+
+To clean up the cluster from everything that skaffold has installed, execute the following command:
+
+```shell
+skaffold delete
+```
+
+To also delete the KinD cluster and the docker container that it is running in,
+execute the following commands:
+
+```shell
+docker container stop workshop-service-mngmt-cluster-control-plane
+kind delete cluster -n workshop-service-mngmt-cluster
+```
