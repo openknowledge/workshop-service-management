@@ -20,6 +20,10 @@ build:
       context: delivery-service
       docker:
         dockerfile: Dockerfile
+    - image: docker.host.internal:5000/backstage
+      context: backstage
+      docker:
+        dockerfile: Dockerfile
 
 deploy:
   helm:
