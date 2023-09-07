@@ -15,6 +15,10 @@
  */
 package de.openknowledge.sample.address.application;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.SpanAttribute;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -55,8 +59,11 @@ public class AddressesResource {
     @GET
     @Path("/{customerNumber}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Address getAddress(@PathParam("customerNumber") CustomerNumber number) {
+    @WithSpan("Get Customer Address by Customer Number")
+    public Address getAddress(@SpanAttribute("customerNumber") @PathParam("customerNumber") CustomerNumber number) {
         LOG.info("RESTful call 'GET address'");
+        Span.current().addEvent("RESTful call 'GET address'");
+
         return addressRepository.find(number).orElseThrow(NotFoundException::new);
     }
 
