@@ -23,6 +23,8 @@ spec:
   podMetricsEndpoints:
     - path: /metrics
       port: "metrics"
+    - path: /metrics
+      port: "prometheus"
   namespaceSelector:
     matchNames:
       - production

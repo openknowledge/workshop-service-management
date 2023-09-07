@@ -1,7 +1,7 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[logLevel=%-5p] %d [%t] %c [TraceId: %X{traceId}/SpanId: %X{spanId}]: %L - %m%n%"/>
+            <PatternLayout pattern="[logLevel=%-5p] %d [%t] %c [TraceId: %X{traceId} / SpanId: %X{spanId}]: %L - %m%n%"/>
         </Console>
     </Appenders>
     <Loggers>

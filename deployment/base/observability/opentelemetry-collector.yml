@@ -13,10 +13,14 @@ spec:
             endpoint: 0.0.0.0:4317
 
     exporters:
+      logging:
+        loglevel: debug
       otlp:
         endpoint: jaeger-collector.observability:4317
         tls:
           insecure: true  
+      prometheus:
+        endpoint: '0.0.0.0:8889'
 
     extensions:
       health_check: {}
@@ -27,6 +31,9 @@ spec:
         traces:
           receivers: [otlp]
           exporters: [otlp]
+        metrics:
+          receivers: [otlp]
+          exporters: [logging, prometheus]
 ---
 apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation

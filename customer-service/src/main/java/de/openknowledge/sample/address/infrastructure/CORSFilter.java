@@ -15,10 +15,12 @@
  */
 package de.openknowledge.sample.address.infrastructure;
 
+import io.opentelemetry.api.metrics.MeterProvider;
 import io.opentelemetry.api.trace.Span;
 
 import org.apache.logging.log4j.ThreadContext;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -31,6 +33,7 @@ import java.util.logging.Logger;
  * Filter to allow cross origin calls.
  */
 @Provider
+@ApplicationScoped
 public class CORSFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
     private static final Logger LOG = Logger.getLogger(CORSFilter.class.getSimpleName());
