@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleHistogram;
@@ -69,8 +70,7 @@ public class CustomerResource {
     private BillingAddressRepository billingAddressRepository;
     @Inject
     private DeliveryAddressRepository deliveryAddressRepository;
-    private final DoubleHistogram setAddressHistogram = MeterProvider.noop()
-            .get("customer-service-meter")
+    private final DoubleHistogram setAddressHistogram = GlobalOpenTelemetry.meterBuilder("de.openknowledge.sample").build()
             .histogramBuilder("setAddressRequestDurations")
             .setUnit("Milliseconds")
             .build();
