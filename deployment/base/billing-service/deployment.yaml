@@ -9,10 +9,12 @@ spec:
   selector:
     matchLabels:
       app: billing-service
+      app.type: microservice
   template:
     metadata:
       labels:
         app: billing-service
+        app.type: microservice
       annotations:
         sidecar.opentelemetry.io/inject: "otel-collector"
         instrumentation.opentelemetry.io/inject-java: "true"
@@ -23,3 +25,8 @@ spec:
           ports:
             - containerPort: 8080
               name: http
+          env:
+            - name: GERONIMO_METRICS_JAXRS_ACCEPTEDHOSTS
+              value: prometheus-kube-prometheus-stack-prometheus-0
+            - name: GERONIMO_METRICS_JAXRS_ACCEPTED_HOSTS
+              value: prometheus-kube-prometheus-stack-prometheus-0

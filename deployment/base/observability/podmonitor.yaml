@@ -31,3 +31,19 @@ spec:
   selector:
     matchLabels:
       sidecar.opentelemetry.io/injected: production.otel-collector
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: app-monitor
+  namespace: production
+spec:
+  podMetricsEndpoints:
+    - path: /metrics
+      port: "http"
+  namespaceSelector:
+    matchNames:
+      - production
+  selector:
+    matchLabels:
+      app.type: microservice

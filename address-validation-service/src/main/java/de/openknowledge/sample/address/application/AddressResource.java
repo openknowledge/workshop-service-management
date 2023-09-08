@@ -15,11 +15,14 @@
  */
 package de.openknowledge.sample.address.application;
 
+import io.opentelemetry.api.trace.Span;
 import static java.util.stream.Collectors.joining;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -54,17 +57,25 @@ public class AddressResource {
 
     @Inject
     private AddressRepository addressesRepository;
+    private Random RAND = new Random();
 
     @GET
     public Response healthCheck() {
-    	return Response.ok().build();
+        return Response.ok().build();
     }
     
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response validateAddress(Address address, @Context UriInfo uri) throws URISyntaxException {
+    public Response validateAddress(Address address, @Context UriInfo uri) throws InterruptedException {
         LOGGER.info("RESTful call 'POST valid address'");
+
+        if (RAND.nextBoolean()){
+           Thread.sleep(1000);
+            Span.current().addEvent("I am sleeping for a second!");
+            LOGGER.info("I am sleeping for a second.");
+        }
+
         if (addressesRepository.isValid(address)) {
             LOGGER.fine("address is valid");
             return Response.ok().build();

@@ -22,6 +22,9 @@ import de.openknowledge.sample.customer.domain.Customer;
 import de.openknowledge.sample.customer.domain.CustomerNumber;
 import de.openknowledge.sample.customer.domain.CustomerRepository;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Timed;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -48,7 +51,6 @@ import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleHistogram;
-import io.opentelemetry.api.metrics.MeterProvider;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.SpanAttribute;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
@@ -78,8 +80,10 @@ public class CustomerResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Customer> getCustomers() {
+    public List<Customer> getCustomers(@Context UriInfo info) {
         LOG.info("RESTful call 'GET all customers'");
+        LOG.info("Host: " +
+                info.getRequestUri().getHost());
         return customerRepository.findAll();
     }
 
@@ -112,6 +116,10 @@ public class CustomerResource {
         billingAddressRepository.update(customerNumber, billingAddress);
     }
 
+    @Timed(name = "setDeliveryAddressForCustomer2",
+            description = "Metrics to monitor the times of processItem method.",
+            unit = MetricUnits.MILLISECONDS,
+            absolute = true)
     @PUT
     @Path("/{customerNumber}/delivery-address")
     @Produces(MediaType.APPLICATION_JSON)
