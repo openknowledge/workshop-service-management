@@ -88,7 +88,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "rate(setAddressRequestDurations_sum[15m]) / rate(setAddressRequestDurations_count[15m])\n\n  ",
+              "expr": "sum(rate(setAddressRequestDurations_sum[5m])) / sum(rate(setAddressRequestDurations_count[5m]))\n\n  ",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -156,7 +156,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "sum(rate(setAddressRequestDurations_bucket{le=\"100\"}[15m])) by (job)/sum(rate(setAddressRequestDurations_count[15m])) by (job)\n\n  ",
+              "expr": "sum(rate(setAddressRequestDurations_bucket{le=\"100\"}[5m])) by (job)/sum(rate(setAddressRequestDurations_count[5m])) by (job)\n\n  ",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -224,7 +224,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "histogram_quantile(0.95, sum(rate(setAddressRequestDurations_bucket[15m])) by (le))",
+              "expr": "histogram_quantile(0.95, sum(rate(setAddressRequestDurations_bucket[5m])) by (le))",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -331,7 +331,7 @@ data:
                 "uid": "prometheus"
               },
               "editorMode": "code",
-              "expr": "sum(rate(setAddressRequestDurations_bucket[15m])) by (le)",
+              "expr": "sum(rate(setAddressRequestDurations_bucket[5m])) by (le)",
               "format": "heatmap",
               "instant": false,
               "legendFormat": "__auto",
@@ -682,7 +682,7 @@ data:
           "type": "logs"
         }
       ],
-      "refresh": false,
+      "refresh": "5s",
       "schemaVersion": 38,
       "style": "dark",
       "tags": [],
@@ -691,8 +691,8 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "04d3c8fa4c77b7a1358688da76b5cf24",
-              "value": "04d3c8fa4c77b7a1358688da76b5cf24"
+              "text": "ca06e35eb364ef3f0bcbb7692ec98f72",
+              "value": "ca06e35eb364ef3f0bcbb7692ec98f72"
             },
             "hide": 0,
             "includeAll": false,
@@ -708,8 +708,8 @@ data:
         ]
       },
       "time": {
-        "from": "2023-09-11T12:55:43.088Z",
-        "to": "2023-09-11T13:10:43.088Z"
+        "from": "now-5m",
+        "to": "now"
       },
       "timepicker": {},
       "timezone": "",

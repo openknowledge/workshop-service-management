@@ -75,15 +75,19 @@ public class AddressesResource {
             @Context UriInfo uri) throws InterruptedException {
 
         if (RAND.nextBoolean()){
-            int secondsToSleep = RAND.nextInt(1001) + 500;
-            Thread.sleep(secondsToSleep);
-            Span.current().addEvent("I am sleeping for " + secondsToSleep + " seconds!");
-            LOG.info("I am sleeping for " + secondsToSleep + " seconds!");
+            int millisecondsToSleep = RAND.nextInt(1001) + 500;
+            Thread.sleep(millisecondsToSleep);
+            Span.current().addEvent("I am sleeping for " + toSeconds(millisecondsToSleep) + " seconds!");
+            LOG.info("I am sleeping for " + toSeconds(millisecondsToSleep) + " seconds!");
         }
 
         LOG.info("RESTful call 'POST address'");
         addressValidationService.validate(address);
         addressRepository.update(customerNumber, address);
         return Response.ok().build();
+    }
+
+    private static double toSeconds(int secondsToSleep) {
+        return (double) secondsToSleep / 1000;
     }
 }
