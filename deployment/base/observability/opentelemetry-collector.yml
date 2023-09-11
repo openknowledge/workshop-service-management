@@ -21,7 +21,22 @@ spec:
           insecure: true  
       prometheus:
         endpoint: '0.0.0.0:8889'
-
+        
+    processors:
+      filter/metricspath:
+        spans:
+          exclude:
+            match_type: strict
+            attributes:
+            - key: http.target
+              value: /metrics
+      filter/metricsendpoint:
+        spans:
+          exclude:
+            match_type: strict
+            attributes:
+            - key: code.namespace
+              value: de.openknowledge.sample.address.infrastructure.MetricsEndpoint
     extensions:
       health_check: {}
 
@@ -30,6 +45,7 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
+          processors: [filter/metricspath, filter/metricsendpoint]
           exporters: [otlp]
         metrics:
           receivers: [otlp]
