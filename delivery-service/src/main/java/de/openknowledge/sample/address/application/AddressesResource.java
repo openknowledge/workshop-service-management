@@ -19,6 +19,7 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.SpanAttribute;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -50,7 +51,7 @@ import de.openknowledge.sample.address.domain.CustomerNumber;
 public class AddressesResource {
 
     private static final Logger LOG = Logger.getLogger(AddressesResource.class.getSimpleName());
-
+    private static final Random RAND = new Random();
     @Inject
     private AddressValidationService addressValidationService;
     @Inject
@@ -71,7 +72,15 @@ public class AddressesResource {
     @Path("/{customerNumber}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setAddress(@PathParam("customerNumber") CustomerNumber customerNumber, Address address,
-            @Context UriInfo uri) {
+            @Context UriInfo uri) throws InterruptedException {
+
+        if (RAND.nextBoolean()){
+            int secondsToSleep = RAND.nextInt(1001) + 500;
+            Thread.sleep(secondsToSleep);
+            Span.current().addEvent("I am sleeping for " + secondsToSleep + " seconds!");
+            LOG.info("I am sleeping for " + secondsToSleep + " seconds!");
+        }
+
         LOG.info("RESTful call 'POST address'");
         addressValidationService.validate(address);
         addressRepository.update(customerNumber, address);

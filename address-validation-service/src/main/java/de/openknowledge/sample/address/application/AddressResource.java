@@ -57,7 +57,6 @@ public class AddressResource {
 
     @Inject
     private AddressRepository addressesRepository;
-    private Random RAND = new Random();
 
     @GET
     public Response healthCheck() {
@@ -69,12 +68,6 @@ public class AddressResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response validateAddress(Address address, @Context UriInfo uri) throws InterruptedException {
         LOGGER.info("RESTful call 'POST valid address'");
-
-        if (RAND.nextBoolean()){
-           Thread.sleep(1000);
-            Span.current().addEvent("I am sleeping for a second!");
-            LOGGER.info("I am sleeping for a second.");
-        }
 
         if (addressesRepository.isValid(address)) {
             LOGGER.fine("address is valid");

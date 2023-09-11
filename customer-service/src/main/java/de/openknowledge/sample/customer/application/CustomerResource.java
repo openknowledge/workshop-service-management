@@ -135,10 +135,7 @@ public class CustomerResource {
             deliveryAddressRepository.update(customerNumber, deliveryAddress);
         } finally {
             Duration duration = Duration.between(start, Instant.now());
-            setAddressHistogram.record(duration.toMillis(), Attributes.of(
-                    AttributeKey.stringKey("method"), "PUT",
-                    AttributeKey.stringKey("Customer"), customerNumber.toString(),
-                    AttributeKey.stringKey("Test"), "xxx"));
+            setAddressHistogram.record(duration.toMillis());
             Span.current().addEvent("Adding a Record of " + duration.toMillis() + "ms to Histogram");
         }
     }
