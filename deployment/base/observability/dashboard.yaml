@@ -63,7 +63,7 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 4,
+            "w": 6,
             "x": 0,
             "y": 0
           },
@@ -131,8 +131,8 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 4,
-            "x": 4,
+            "w": 6,
+            "x": 6,
             "y": 0
           },
           "id": 8,
@@ -164,74 +164,6 @@ data:
             }
           ],
           "title": "SLA - 95% of Requests should be within 100ms",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "max": 2500,
-              "min": 20,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 100
-                  }
-                ]
-              },
-              "unit": "ms"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 4,
-            "x": 8,
-            "y": 0
-          },
-          "id": 10,
-          "options": {
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": true,
-            "text": {}
-          },
-          "pluginVersion": "10.1.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "histogram_quantile(0.95, sum(rate(setAddressRequestDurations_bucket[5m])) by (le))",
-              "instant": false,
-              "legendFormat": "__auto",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "95 Percent of the Requests took",
           "type": "gauge"
         },
         {
@@ -682,7 +614,7 @@ data:
           "type": "logs"
         }
       ],
-      "refresh": "5s",
+      "refresh": false,
       "schemaVersion": 38,
       "style": "dark",
       "tags": [],
@@ -691,8 +623,8 @@ data:
           {
             "current": {
               "selected": false,
-              "text": "ca06e35eb364ef3f0bcbb7692ec98f72",
-              "value": "ca06e35eb364ef3f0bcbb7692ec98f72"
+              "text": "235f7137e6e7e618232cdc477966d90a",
+              "value": "235f7137e6e7e618232cdc477966d90a"
             },
             "hide": 0,
             "includeAll": false,
@@ -715,6 +647,6 @@ data:
       "timezone": "",
       "title": "Tracing",
       "uid": "d97c5f92-6e5e-4464-a613-996f9a833b93",
-      "version": 1,
+      "version": 4,
       "weekStart": ""
     }
