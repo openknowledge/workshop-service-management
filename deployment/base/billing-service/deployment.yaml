@@ -16,6 +16,7 @@ spec:
       annotations:
         sidecar.opentelemetry.io/inject: "otel-collector"
         instrumentation.opentelemetry.io/inject-java: "true"
+        linkerd.io/inject: enabled
     spec:
       containers:
         - name: billing-service

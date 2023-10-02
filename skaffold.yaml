@@ -31,6 +31,20 @@ deploy:
         createNamespace: true
         valuesFiles:
           - ./ingress-nginx-values.yaml
+      - name: linkerd-crds
+        repo: https://helm.linkerd.io/stable
+        remoteChart: linkerd-crds
+        namespace: linkerd
+        createNamespace: true
+      - name: linkerd-control-plane
+        repo: https://helm.linkerd.io/stable
+        remoteChart: linkerd-control-plane
+        namespace: linkerd
+        createNamespace: true
+        setFiles:
+          identityTrustAnchorsPEM: ./ca.crt
+          "identity.issuer.tls.crtPEM": ./issuer.crt
+          "identity.issuer.tls.keyPEM": ./issuer.key
   statusCheckDeadlineSeconds: 300
   tolerateFailuresUntilDeadline: true
 

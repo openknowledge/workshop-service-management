@@ -27,14 +27,12 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import io.opentelemetry.api.trace.Span;
-
 /**
  * Filter to allow cross origin calls.
  */
 @Provider
 @ApplicationScoped
-public class CORSFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class CORSFilter implements ContainerResponseFilter {
 
     private static final Logger LOG = Logger.getLogger(CORSFilter.class.getSimpleName());
     @Override
@@ -45,16 +43,5 @@ public class CORSFilter implements ContainerRequestFilter, ContainerResponseFilt
         cres.getHeaders().add("Access-Control-Allow-Credentials", "true");
         cres.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         cres.getHeaders().add("Access-Control-Max-Age", "1209600");
-
-        ThreadContext.remove("traceId");
-        ThreadContext.remove("spanId");
-    }
-
-    @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        LOG.info("Current Span: " + Span.current().getSpanContext().getTraceId() + " " + Span.current().getSpanContext().getSpanId());
-
-        ThreadContext.put("traceId", Span.current().getSpanContext().getTraceId());
-        ThreadContext.put("spanId", Span.current().getSpanContext().getSpanId());
     }
 }

@@ -26,18 +26,6 @@
         <junit.version>5.8.2</junit.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.opentelemetry</groupId>
-                <artifactId>opentelemetry-bom</artifactId>
-                <version>1.27.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.meecrowave</groupId>
@@ -137,10 +125,6 @@
             <groupId>org.apache.geronimo</groupId>
             <artifactId>geronimo-metrics</artifactId>
             <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-api</artifactId>
         </dependency>
     </dependencies>
     <build>
