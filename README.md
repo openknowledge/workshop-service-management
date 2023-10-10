@@ -35,6 +35,16 @@ kubectl config current-context
 If the context was not set automatically, but the cluster is running in the docker environment 
 set the context manually:
 
+### Certificates for LinkerD
+
+Install Step and run the following commands.
+Override the existing certificates in the process.
+```shell
+step certificate create root.linkerd.cluster.local ca.crt ca.key --profile root-ca --no-password --insecure
+
+step certificate create identity.linkerd.cluster.local issuer.crt issuer.key --profile intermediate-ca --not-after 8760h --no-password --insecure --ca ca.crt --ca-key ca.key
+```
+
 ```shell
 kubectl config set-context kind-workshop-service-mgmt-cluster
 ```

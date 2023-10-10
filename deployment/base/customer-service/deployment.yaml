@@ -17,6 +17,7 @@ spec:
         sidecar.opentelemetry.io/inject: "otel-collector"
         instrumentation.opentelemetry.io/inject-java: "true"
         linkerd.io/inject: enabled
+        "config.linkerd.io/default-inbound-policy": "all-authenticated"
     spec:
       containers:
         - name: customer-service
