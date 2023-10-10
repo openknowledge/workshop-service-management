@@ -15,63 +15,36 @@
  */
 package de.openknowledge.sample.address.domain;
 
-
 import static org.apache.commons.lang3.Validate.notNull;
 
-import javax.json.bind.adapter.JsonbAdapter;
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
-import de.openknowledge.sample.address.domain.City.Adapter;
-
-@JsonbTypeAdapter(Adapter.class)
 public class City {
 
-    private String name;
+    private ZipCode zipCode;
+    private CityName name;
 
-    public static City valueOf(String name) {
-        return new City(name);
+    @JsonbCreator
+    public City(@JsonbProperty("zipCode") ZipCode zipCode, @JsonbProperty("name") CityName name) {
+        this.zipCode = notNull(zipCode, "zip code may not be null");
+        this.name = notNull(name, "name may not be null");
     }
 
-    public City(String name) {
-        this.name = notNull(name, "name may not be empty").trim();
-    }
-
-    protected City() {
-        // for framework
-    }
-
+    @JsonbTypeAdapter(ZipCode.Adapter.class)
     public ZipCode getZipCode() {
-        String firstSegment = name.substring(0, name.indexOf(' '));
-        String lastSegment = name.substring(name.lastIndexOf(' ') + 1);
-        if (containsDigit(firstSegment)) {
-            return new ZipCode(firstSegment);
-        } else if (containsDigit(lastSegment)) {
-            return new ZipCode(name.substring(firstSegment.length()));
-        } else {
-            throw new IllegalStateException("Could not determine zip code");
-        }
+        return zipCode;
     }
 
-    public CityName getCityName() {
-        String firstSegment = name.substring(0, name.indexOf(' '));
-        String lastSegment = name.substring(name.lastIndexOf(' ') + 1);
-        if (containsDigit(firstSegment)) {
-            return new CityName(name.substring(firstSegment.length()));
-        } else if (containsDigit(lastSegment)) {
-            return new CityName(name.substring(0, firstSegment.length()));
-        } else {
-            throw new IllegalStateException("Could not determine city name");
-        }
-    }
-
-    @Override
-    public String toString() {
+    @JsonbTypeAdapter(CityName.Adapter.class)
+    public CityName getName() {
         return name;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return zipCode.hashCode() ^ name.hashCode();
     }
 
     @Override
@@ -80,39 +53,17 @@ public class City {
             return true;
         }
 
-        if (object == null || getClass() != object.getClass()) {
+        if (!(object instanceof City)) {
             return false;
         }
 
         City city = (City) object;
 
-        return toString().equals(city.toString());
+        return zipCode.equals(city.zipCode) && name.equals(city.getName());
     }
 
-    private boolean containsDigit(String name) {
-        return name.contains("0")
-                || name.contains("1")
-                || name.contains("2")
-                || name.contains("3")
-                || name.contains("4")
-                || name.contains("5")
-                || name.contains("6")
-                || name.contains("7")
-                || name.contains("8")
-                || name.contains("9");
+    @Override
+    public String toString() {
+        return zipCode + " " + name;
     }
-
-    public static class Adapter implements JsonbAdapter<City, String> {
-
-        @Override
-        public City adaptFromJson(String name) throws Exception {
-            return new City(name);
-        }
-
-        @Override
-        public String adaptToJson(City name) throws Exception {
-            return name.toString();
-        }
-    }
-
 }

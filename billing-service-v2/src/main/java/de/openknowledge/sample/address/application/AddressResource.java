@@ -40,8 +40,8 @@ import de.openknowledge.sample.address.domain.CustomerNumber;
  */
 @ApplicationScoped
 @Path("/billing-addresses")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes("application/vnd.de.openknowledge.sample.address.v2+json")
+@Produces("application/vnd.de.openknowledge.sample.address.v2+json")
 public class AddressResource {
 
     private final static Logger LOGGER = Logger.getLogger(AddressResource.class.getSimpleName());

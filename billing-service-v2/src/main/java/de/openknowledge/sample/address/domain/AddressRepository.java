@@ -41,10 +41,10 @@ public class AddressRepository {
         addresses = new ConcurrentHashMap<>();
 
         addresses.put(new CustomerNumber("0815"), new Address(new Recipient("Max Mustermann"),
-                new Street(new StreetName("Poststr."), new HouseNumber("1")), new City("26122 Oldenburg")));
+                new AddressLine("Poststr. 1"), new City(new ZipCode("26122"), new CityName("Oldenburg"))));
 
         addresses.put(new CustomerNumber("0816"), new Address(new Recipient("Erika Mustermann"),
-                new Street(new StreetName("II. Hagen"), new HouseNumber("7")), new City("45127 Essen")));
+                new AddressLine("II. Hagen 7"), new City(new ZipCode("45127"), new CityName("Essen"))));
         LOGGER.info(format("address repository initialized with %d addresses: ", addresses.size()));
     }
 

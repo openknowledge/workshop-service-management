@@ -24,7 +24,8 @@ import javax.json.bind.annotation.JsonbTypeAdapter;
 
 public class Address {
     private Recipient recipient;
-    private Street street;
+    private AddressLine addressLine1;
+    private AddressLine addressLine2 = AddressLine.EMPTY;
     private City city;
 
     @JsonbCreator
@@ -32,9 +33,9 @@ public class Address {
         this.recipient = notNull(recipient, "recipient may not be null");
     }
 
-    public Address(Recipient recipient, Street street, City city) {
+    public Address(Recipient recipient, AddressLine addressLine1, City city) {
         this(recipient);
-        setStreet(street);
+        setAddressLine1(addressLine1);
         setCity(city);
     }
 
@@ -43,15 +44,24 @@ public class Address {
         return recipient;
     }
 
-    public Street getStreet() {
-        return street;
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine1() {
+        return addressLine1;
     }
 
-    public void setStreet(Street street) {
-        this.street = street;
+    public void setAddressLine1(AddressLine addressLine1) {
+        this.addressLine1 = addressLine1;
     }
 
-    @JsonbTypeAdapter(City.Adapter.class)
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(AddressLine addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
     public City getCity() {
         return city;
     }
