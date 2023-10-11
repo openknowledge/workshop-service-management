@@ -16,23 +16,18 @@
 package de.openknowledge.sample.address.domain;
 
 import static javax.ws.rs.client.ClientBuilder.newClient;
-import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.Family.SUCCESSFUL;
-
-import java.util.Optional;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.johnzon.jaxrs.jsonb.jaxrs.JsonbJaxrsProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import de.openknowledge.sample.customer.domain.CustomerNumber;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class BillingAddressRepository {
@@ -45,27 +40,14 @@ public class BillingAddressRepository {
     String billingServiceUrl;
 
     public Optional<Address> find(CustomerNumber customerNumber) {
-        return this.find(customerNumber, MediaType.APPLICATION_JSON);
-    }
-
-    public void update(CustomerNumber customerNumber, Address billingAddress) {
-        LOG.info("update billing address at " + billingServiceUrl);
-        newClient().target(billingServiceUrl)
+        LOG.info("load billing address from " + billingServiceUrl);
+        return Optional.of(newClient()
+                .register(JsonbJaxrsProvider.class)
+                .target(billingServiceUrl)
                 .path(BILLING_ADDRESSES_PATH)
                 .path(customerNumber.toString())
                 .request(MediaType.APPLICATION_JSON)
-                .post(entity(billingAddress, MediaType.APPLICATION_JSON_TYPE));
-    }
-
-    public Optional<Address> find(CustomerNumber customerNumber, String acceptHeader) {
-        LOG.info("load billing address from " + billingServiceUrl + " with header " + acceptHeader);
-        return Optional.of(newClient()
-                        .register(JsonbJaxrsProvider.class)
-                        .target(billingServiceUrl)
-                        .path(BILLING_ADDRESSES_PATH)
-                        .path(customerNumber.toString())
-                        .request(acceptHeader)
-                        .get())
+                .get())
                 .filter(r -> r.getStatusInfo().getFamily() == SUCCESSFUL)
                 .filter(Response::hasEntity)
                 .map(r -> r.readEntity(Address.class));

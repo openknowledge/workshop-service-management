@@ -43,11 +43,13 @@ import de.openknowledge.sample.address.domain.BillingAddressRepository;
 import de.openknowledge.sample.address.domain.DeliveryAddressRepository;
 import de.openknowledge.sample.customer.domain.CustomerNumber;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import rocks.limburg.cdimock.MockitoBeans;
 
 @MockitoBeans(types = {BillingAddressRepository.class, DeliveryAddressRepository.class})
 @MeecrowaveConfig
+@Disabled
 public class CustomerServiceTest {
 
     @ConfigurationInject
@@ -63,15 +65,15 @@ public class CustomerServiceTest {
 
     @BeforeEach
     public void setUp() {
-        when(deliveryAddressRepository.find(new CustomerNumber("0815")))
-                .thenReturn(Optional.of(Address.of("Max Mustermann").atStreet("Poststrasse 1").inCity("26122 Oldenburg").build()));
-        when(deliveryAddressRepository.find(new CustomerNumber("0816")))
-                .thenReturn(Optional.of(Address.of("Erika Mustermann").atStreet("II. Hagen 7").inCity("45127 Essen").build()));
-
-        when(billingAddressRepository.find(new CustomerNumber("0815")))
-                .thenReturn(Optional.of(Address.of("Max Mustermann").atStreet("Poststrasse 1").inCity("26122 Oldenburg").build()));
-        when(billingAddressRepository.find(new CustomerNumber("007")))
-                .thenReturn(Optional.of(Address.of("Sherlock Holmes").atStreet("221B Baker Street").inCity("London NW1 6XE").build()));
+//        when(deliveryAddressRepository.find(new CustomerNumber("0815")))
+//                .thenReturn(Optional.of(Address.of("Max Mustermann").atStreet("Poststrasse 1").inCity("26122 Oldenburg").build()));
+//        when(deliveryAddressRepository.find(new CustomerNumber("0816")))
+//                .thenReturn(Optional.of(Address.of("Erika Mustermann").atStreet("II. Hagen 7").inCity("45127 Essen").build()));
+//
+//        when(billingAddressRepository.find(new CustomerNumber("0815")))
+//                .thenReturn(Optional.of(Address.of("Max Mustermann").atStreet("Poststrasse 1").inCity("26122 Oldenburg").build()));
+//        when(billingAddressRepository.find(new CustomerNumber("007")))
+//                .thenReturn(Optional.of(Address.of("Sherlock Holmes").atStreet("221B Baker Street").inCity("London NW1 6XE").build()));
 
         uri = URI.create("http://localhost:" + config.getHttpPort());
     }

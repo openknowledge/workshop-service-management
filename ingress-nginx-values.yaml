@@ -19,3 +19,9 @@ controller:
     enabled: false
   extraArgs:
     publish-status-address: "localhost"
+  annotations:
+    linkerd.io/inject: enabled
+    "config.linkerd.io/default-inbound-policy": "all-unauthenticated"
+  podAnnotations:
+    linkerd.io/inject: enabled
+    "config.linkerd.io/default-inbound-policy": "all-unauthenticated"

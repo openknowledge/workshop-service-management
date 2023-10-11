@@ -12,6 +12,10 @@ build:
       context: billing-service
       docker:
         dockerfile: Dockerfile
+    - image: docker.host.internal:5000/billing-v2
+      context: billing-service-v2
+      docker:
+        dockerfile: Dockerfile
     - image: docker.host.internal:5000/customer
       context: customer-service
       docker:

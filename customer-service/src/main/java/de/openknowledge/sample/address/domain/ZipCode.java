@@ -27,6 +27,10 @@ public class ZipCode {
 
     private String code;
 
+    public static ZipCode valueOf(String name) {
+        return new ZipCode(name);
+    }
+
     public ZipCode(String code) {
         this.code = notNull(code, "code may not be empty").trim();
     }
@@ -63,13 +67,13 @@ public class ZipCode {
     public static class Adapter implements JsonbAdapter<ZipCode, String> {
 
         @Override
-        public ZipCode adaptFromJson(String zip) throws Exception {
-            return new ZipCode(zip);
+        public ZipCode adaptFromJson(String name) throws Exception {
+            return new ZipCode(name);
         }
 
         @Override
-        public String adaptToJson(ZipCode zip) throws Exception {
-            return zip.toString();
+        public String adaptToJson(ZipCode name) throws Exception {
+            return name.toString();
         }
     }
 

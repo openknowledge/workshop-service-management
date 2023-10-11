@@ -1,27 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: billing-deployment
+  name: billing-deployment-v2
   labels:
-    app: billing-service
+    app: billing-service-v2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: billing-service
+      app: billing-service-v2
   template:
     metadata:
       labels:
-        app: billing-service
+        app: billing-service-v2
       annotations:
         sidecar.opentelemetry.io/inject: "otel-collector"
         instrumentation.opentelemetry.io/inject-java: "true"
-        linkerd.io/inject: enabled
-        "config.linkerd.io/default-inbound-policy": "all-authenticated"
+        "config.linkerd.io/default-inbound-policy": "all-unauthenticated"
     spec:
       containers:
-        - name: billing-service
-          image: docker.host.internal:5000/billing:latest
+        - name: billing-service-v2
+          image: docker.host.internal:5000/billing-v2:latest
           ports:
             - containerPort: 8080
               name: http

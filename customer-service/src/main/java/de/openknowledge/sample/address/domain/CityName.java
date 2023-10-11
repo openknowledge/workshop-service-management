@@ -27,6 +27,10 @@ public class CityName {
 
     private String name;
 
+    public static CityName valueOf(String name) {
+        return new CityName(name);
+    }
+
     public CityName(String name) {
         this.name = notNull(name, "name may not be empty").trim();
     }

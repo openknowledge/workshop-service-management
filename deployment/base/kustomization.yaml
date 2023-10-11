@@ -5,5 +5,7 @@ resources:
   - ./production-namespace.yaml
   - ./address-validation-service
   - ./billing-service
+  - ./billing-service-v2
   - ./customer-service
   - ./delivery-service
+  - ./service-mesh

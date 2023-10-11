@@ -1,19 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: billing-ingress
+  name: billing-ingress-v2
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
-    - host: billing.localhost
+    - host: billing-v2.localhost
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: billing-service
+                name: billing-service-v2
                 port:
                   number: 8080

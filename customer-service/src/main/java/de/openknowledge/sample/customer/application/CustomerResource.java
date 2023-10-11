@@ -24,6 +24,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -79,11 +80,12 @@ public class CustomerResource {
 
     @GET
     @Path("/{customerNumber}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomer(@PathParam("customerNumber") CustomerNumber customerNumber) {
+    @Produces({MediaType.APPLICATION_JSON, "application/vnd.de.openknowledge.sample.address.v2+json"})
+    public Customer getCustomer(@PathParam("customerNumber") CustomerNumber customerNumber,
+                                @HeaderParam("Accept") String acceptHeader) {
         LOG.info("RESTful call 'GET customer'");
         Customer customer = customerRepository.find(customerNumber).orElseThrow(customerNotFound(customerNumber));
-        billingAddressRepository.find(customerNumber).ifPresent(customer::setBillingAddress);
+        billingAddressRepository.find(customerNumber, acceptHeader).ifPresent(customer::setBillingAddress);
         deliveryAddressRepository.find(customerNumber).ifPresent(customer::setDeliveryAddress);
         return customer;
     }

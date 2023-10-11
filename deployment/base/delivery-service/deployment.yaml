@@ -16,7 +16,6 @@ spec:
       annotations:
         sidecar.opentelemetry.io/inject: "otel-collector"
         instrumentation.opentelemetry.io/inject-java: "true"
-        linkerd.io/inject: enabled
         "config.linkerd.io/default-inbound-policy": "all-unauthenticated"
     spec:
       containers:
@@ -28,3 +27,5 @@ spec:
           env:
             - name: ADDRESS_VALIDATION_SERVICE_URL
               value: http://address-validation-service:8080
+            - name: BILLING_SERVICE_URL
+              value: http://billing-service:8080

@@ -1,22 +1,22 @@
 apiVersion: policy.linkerd.io/v1beta2
 kind: HTTPRoute
 metadata:
-  name: customer-router
+  name: billing-router
   namespace: production
 spec:
   parentRefs:
-    - name: customer-service
+    - name: billing-service
       kind: Service
+      port: 8080
       group: core
-      port: 9898
   rules:
     - matches:
         - headers:
-            - name: "x-request-id"
-              value: "alternative"
+            - name: "Accept"
+              value: "application/vnd.de.openknowledge.sample.address.v2+json"
       backendRefs:
-        - name: "version-2"
+        - name: "billing-service-v2"
           port: 8080
     - backendRefs:
-        - name: "version-1"
+        - name: "billing-service"
           port: 8080

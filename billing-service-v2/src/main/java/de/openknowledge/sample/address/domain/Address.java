@@ -26,17 +26,17 @@ public class Address {
     private Recipient recipient;
     private AddressLine addressLine1;
     private AddressLine addressLine2 = AddressLine.EMPTY;
-    private City city;
+    private City location;
 
     @JsonbCreator
     public Address(@JsonbProperty("recipient") Recipient recipient) {
         this.recipient = notNull(recipient, "recipient may not be null");
     }
 
-    public Address(Recipient recipient, AddressLine addressLine1, City city) {
+    public Address(Recipient recipient, AddressLine addressLine1, City location) {
         this(recipient);
         setAddressLine1(addressLine1);
-        setCity(city);
+        setLocation(location);
     }
 
     @JsonbTypeAdapter(Recipient.Adapter.class)
@@ -62,11 +62,11 @@ public class Address {
         this.addressLine2 = addressLine2;
     }
 
-    public City getCity() {
-        return city;
+    public City getLocation() {
+        return location;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setLocation(City location) {
+        this.location = location;
     }
 }

@@ -45,6 +45,9 @@ public class AddressRepository {
 
         addresses.put(new CustomerNumber("0816"), new Address(new Recipient("Erika Mustermann"),
                 new Street(new StreetName("II. Hagen"), new HouseNumber("7")), new City("45127 Essen")));
+
+        addresses.put(new CustomerNumber("007"), new Address(new Recipient("James Bond"),
+                new Street(new StreetName("Wellington Square"), new HouseNumber("30")), new City("007 Chelsea")));
         LOGGER.info(format("address repository initialized with %d addresses: ", addresses.size()));
     }
 

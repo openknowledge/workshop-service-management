@@ -15,10 +15,8 @@
  */
 package de.openknowledge.sample.address.domain;
 
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.Validate.notNull;
 
-import java.util.Objects;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
@@ -26,82 +24,96 @@ import javax.json.bind.annotation.JsonbTypeAdapter;
 
 public class Address {
     private Recipient recipient;
-    private Street street;
-    private City city;
+    private AddressLine addressLine1;
+    private AddressLine addressLine2 = AddressLine.EMPTY;
+    private City location;
 
     @JsonbCreator
     public Address(@JsonbProperty("recipient") Recipient recipient) {
         this.recipient = notNull(recipient, "recipient may not be null");
     }
 
-    public Address(Recipient recipient, Street street, City city) {
+    public Address(Recipient recipient, AddressLine addressLine1, City location) {
         this(recipient);
-        setStreet(street);
-        setCity(city);
+        setAddressLine1(addressLine1);
+        setLocation(location);
     }
 
+    @JsonbTypeAdapter(Recipient.Adapter.class)
     public Recipient getRecipient() {
         return recipient;
     }
 
-    public Street getStreet() {
-        return street;
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine1() {
+        return addressLine1;
     }
 
+    public void setAddressLine1(AddressLine addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(AddressLine addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public City getLocation() {
+        return location;
+    }
+
+    public void setLocation(@JsonbProperty("location") City location) {
+        this.location = location;
+    }
+
+    @JsonbProperty("street")
     public void setStreet(Street street) {
-        this.street = street;
+        this.addressLine1 = new AddressLine(street.toString());
     }
 
-    public City getCity() {
-        return city;
+    @JsonbProperty("city")
+    public void setCity(String city) {
+        this.location = new City(getZipCode(city), getCityName(city));
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    private ZipCode getZipCode(String addressLine) {
+        String firstSegment = addressLine.substring(0, addressLine.indexOf(' '));
+        String lastSegment = addressLine.substring(addressLine.lastIndexOf(' ') + 1);
+        if (containsDigit(firstSegment)) {
+            return new ZipCode(firstSegment);
+        } else if (containsDigit(lastSegment)) {
+            return new ZipCode(addressLine.substring(firstSegment.length()));
+        } else {
+            throw new IllegalStateException("Could not determine zip code");
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return recipient.hashCode() + ofNullable(street).map(Object::hashCode).orElse(0) + ofNullable(city).map(Object::hashCode).orElse(0);
+    private CityName getCityName(String addressLine) {
+        String firstSegment = addressLine.substring(0, addressLine.indexOf(' '));
+        String lastSegment = addressLine.substring(addressLine.lastIndexOf(' ') + 1);
+        if (containsDigit(firstSegment)) {
+            return new CityName(addressLine.substring(firstSegment.length()));
+        } else if (containsDigit(lastSegment)) {
+            return new CityName(addressLine.substring(0, firstSegment.length()));
+        } else {
+            throw new IllegalStateException("Could not determine city addressLine");
+        }
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || !getClass().equals(object.getClass())) {
-            return false;
-        }
-        Address address = (Address)object;
-        return recipient.equals(recipient) && Objects.equals(street, address.street) && Objects.equals(city, address.city);
-    }
-
-    public static Builder of(String recipient) {
-        return new Builder(new Recipient(recipient));
-    }
-
-    public static class Builder {
-    
-        private Address address;
-
-        private Builder(Recipient recipient) {
-            address = new Address(recipient);
-        }
-
-        public Builder atStreet(String name) {
-            AddressLine addressLine = new AddressLine(name);
-            address.setStreet(new Street(addressLine.getStreetName(), addressLine.getHouseNumber()));
-            return this;
-        }
-
-        public Builder inCity(String city) {
-            address.setCity(new City(city));
-            return this;
-        }
-
-        public Address build() {
-            return address;
-        }
+    private boolean containsDigit(String addressLine) {
+        return addressLine.contains("0")
+                || addressLine.contains("1")
+                || addressLine.contains("2")
+                || addressLine.contains("3")
+                || addressLine.contains("4")
+                || addressLine.contains("5")
+                || addressLine.contains("6")
+                || addressLine.contains("7")
+                || addressLine.contains("8")
+                || addressLine.contains("9");
     }
 }

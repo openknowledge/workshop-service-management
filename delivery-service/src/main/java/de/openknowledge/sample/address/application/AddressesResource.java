@@ -34,6 +34,7 @@ import javax.ws.rs.core.UriInfo;
 import de.openknowledge.sample.address.domain.Address;
 import de.openknowledge.sample.address.domain.AddressValidationService;
 import de.openknowledge.sample.address.domain.AddressRepository;
+import de.openknowledge.sample.address.domain.BillingAddressRepository;
 import de.openknowledge.sample.address.domain.CustomerNumber;
 
 /**
@@ -51,13 +52,17 @@ public class AddressesResource {
     private AddressValidationService addressValidationService;
     @Inject
     private AddressRepository addressRepository;
+    @Inject
+    private BillingAddressRepository billingAddressRepository;
 
     @GET
     @Path("/{customerNumber}")
     @Produces(MediaType.APPLICATION_JSON)
     public Address getAddress(@PathParam("customerNumber") CustomerNumber number) {
         LOG.info("RESTful call 'GET address'");
-        return addressRepository.find(number).orElseThrow(NotFoundException::new);
+        return addressRepository.find(number)
+                .or(() -> billingAddressRepository.find(number))
+                .orElseThrow(NotFoundException::new);
     }
 
     @POST

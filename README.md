@@ -102,6 +102,18 @@ For Delivery: http://localhost:30083
 If for whatever reason both options above are not working, you can also use port-forwarding to
 access the applications.
 
+### Installing LinkerD Viz
+
+```shell
+linkerd viz install | k apply -f -
+```
+
+To open the dashboard with a port-forward:
+
+```shell
+linkerd viz dashboard &
+```
+
 ### Check what is running
 
 To check what is running on the cluster, you can use kubectl to navigate through the cluster.

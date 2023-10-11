@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: billing-service
+  name: billing-service-v2
 spec:
   selector:
-    app: billing-service
+    app: billing-service-v2
   type: NodePort
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30081
+      nodePort: 30084
       name: service
     - protocol: TCP
       port: 8888

@@ -40,8 +40,6 @@ import de.openknowledge.sample.address.domain.CustomerNumber;
  */
 @ApplicationScoped
 @Path("/billing-addresses")
-@Consumes("application/vnd.de.openknowledge.sample.address.v2+json")
-@Produces("application/vnd.de.openknowledge.sample.address.v2+json")
 public class AddressResource {
 
     private final static Logger LOGGER = Logger.getLogger(AddressResource.class.getSimpleName());
@@ -51,7 +49,7 @@ public class AddressResource {
 
     @GET
     @Path("/{customerNumber}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/vnd.de.openknowledge.sample.address.v2+json")
     public Address getAddress(@PathParam("customerNumber") CustomerNumber number) {
         LOGGER.info("RESTful call 'GET address'");
         return addressesRepository.find(number).orElseThrow(NotFoundException::new);
@@ -59,7 +57,7 @@ public class AddressResource {
 
     @POST
     @Path("/{customerNumber}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes("application/vnd.de.openknowledge.sample.address.v2+json")
     public Response setAddress(@PathParam("customerNumber") CustomerNumber customerNumber, Address address,
             @Context UriInfo uri) {
         LOGGER.info("RESTful call 'POST address'");
