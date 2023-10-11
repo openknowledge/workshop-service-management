@@ -49,7 +49,9 @@ public class AddressValidationService {
                 .path(ADDRESS_VALIDATION_PATH)
                 .request(MediaType.APPLICATION_JSON)
                 .post(entity(address, MediaType.APPLICATION_JSON_TYPE));
-        if (validationResult.getStatus() != Response.Status.OK.getStatusCode()) {
+        if (Response.Status.FORBIDDEN.getStatusCode() == validationResult.getStatus()) {
+            throw new ValidationException("Call to Validation Service Forbidden");
+        } else if (validationResult.getStatus() != Response.Status.OK.getStatusCode()) {
             LOG.info("validation failed");
             JsonObject problem = Json.createReader(new StringReader(validationResult.readEntity(String.class))).readObject();
             throw new ValidationException(problem.getString("detail"));
