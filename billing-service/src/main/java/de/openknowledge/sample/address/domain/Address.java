@@ -17,6 +17,7 @@ package de.openknowledge.sample.address.domain;
 
 
 import static org.apache.commons.lang3.Validate.notNull;
+import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
@@ -27,18 +28,19 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @Schema(name = "Address")
 public class Address {
     private Recipient recipient;
-    private Street street;
-    private City city;
+    private AddressLine addressLine1;
+    private AddressLine addressLine2 = AddressLine.EMPTY;
+    private Location location;
 
     @JsonbCreator
     public Address(@JsonbProperty("recipient") Recipient recipient) {
         this.recipient = notNull(recipient, "recipient may not be null");
     }
 
-    public Address(Recipient recipient, Street street, City city) {
+    public Address(Recipient recipient, AddressLine addressLine1, Location location) {
         this(recipient);
-        setStreet(street);
-        setCity(city);
+        setAddressLine1(addressLine1);
+        setLocation(location);
     }
 
     @JsonbTypeAdapter(Recipient.Adapter.class)
@@ -46,20 +48,47 @@ public class Address {
         return recipient;
     }
 
+    @Schema(name = "addressLine1", type = STRING, example = "Poststr. 1")
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine1() {
+        return addressLine1;
+    }
+
     public Street getStreet() {
-        return street;
+        return new Street(addressLine1);
     }
 
     public void setStreet(Street street) {
-        this.street = street;
+        addressLine1 = street.getAddressLine();
     }
 
-    @JsonbTypeAdapter(City.Adapter.class)
+    public void setAddressLine1(AddressLine addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    @Schema(name = "addressLine2", type = STRING, example = "2. OG")
+    @JsonbTypeAdapter(AddressLine.Adapter.class)
+    public AddressLine getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(AddressLine addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
     public City getCity() {
-        return city;
+        return location.getCity();
     }
 
     public void setCity(City city) {
-        this.city = city;
+        this.location = new Location(city);
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

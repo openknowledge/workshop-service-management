@@ -16,27 +16,57 @@
 package de.openknowledge.sample.address.domain;
 
 import static org.apache.commons.lang3.Validate.notNull;
+import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.json.bind.annotation.JsonbTypeAdapter;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Schema(name = "Location")
 public class Location {
 
     private ZipCode zipCode;
     private CityName cityName;
 
-    @JsonbCreator
-    public Location(@JsonbProperty("zipCode") ZipCode zipCode, @JsonbProperty("cityName") CityName city) {
+    protected Location() {
+        // for frameworks
+    }
+
+    public Location(ZipCode zipCode, CityName city) {
         this.zipCode = notNull(zipCode, "zip code may not be null");
         this.cityName = notNull(city, "city name may not be null");
     }
 
+    public Location(City city) {
+        this.zipCode = city.getZipCode();
+        this.cityName = city.getCityName();
+    }
+
+    @JsonbTransient
+    @Schema(hidden = true)
+    public City getCity() {
+        return new City(zipCode + " " + cityName);
+    }
+
+    @Schema(name = "zipCode", type = STRING, example = "26122")
+    @JsonbTypeAdapter(ZipCode.Adapter.class)
     public ZipCode getZipCode() {
         return zipCode;
     }
 
+    public void setZipCode(ZipCode zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    @Schema(name = "cityName", type = STRING, example = "Oldenburg")
+    @JsonbTypeAdapter(CityName.Adapter.class)
     public CityName getCityName() {
         return cityName;
+    }
+
+    public void setCityName(CityName cityName) {
+        this.cityName = cityName;
     }
 
     @Override
