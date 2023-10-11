@@ -12,4 +12,6 @@ EXPOSE 8080
 COPY --from=mvn /usr/src/online-shop/target/runner/meecrowave-core-runner.jar /opt/meecrowave-runner.jar
 COPY --from=mvn /usr/src/online-shop/target/customer-service.war /opt/customer-service.war
 COPY src/main/resources/log4j2.xml /opt/log4j2.xml
-ENTRYPOINT ["java", "--illegal-access=permit", "-Djava.net.preferIPv4Stack=true", "-Dlog4j2.configurationFile=/opt/log4j2.xml", "-jar", "/opt/meecrowave-runner.jar", "--webapp", "/opt/customer-service.war"]
+COPY opentelemetry-javaagent.jar /opt/opentelemetry-javaagent.jar
+
+ENTRYPOINT ["java", "--illegal-access=permit", "-javaagent:/opt/opentelemetry-javaagent.jar" , "-Dotel.service.name=customer-service", "-Dotel.propagators=b3", "-Dotel.traces.exporter=jaeger", "-Dotel.exporter.otlp.endpoint=collector.linkerd-jaeger:55678" , "-Djava.net.preferIPv4Stack=true", "-Dlog4j2.configurationFile=/opt/log4j2.xml", "-jar", "/opt/meecrowave-runner.jar", "--webapp", "/opt/customer-service.war"]
