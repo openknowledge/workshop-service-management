@@ -13,39 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 import javax.json.bind.adapter.JsonbAdapter;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
-import de.openknowledge.sample.address.domain.HouseNumber.Adapter;
+import de.openknowledge.sample.address.application.v1.StreetName.Adapter;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 
 @JsonbTypeAdapter(Adapter.class)
-public class HouseNumber {
-    private String number;
+public class StreetName {
 
-    public static HouseNumber valueOf(String number) {
-        return new HouseNumber(number);
+    private String name;
+
+    public static StreetName valueOf(String name) {
+        return new StreetName(name);
     }
 
-    protected HouseNumber() {
+    protected StreetName() {
         // for frameworks
     }
 
-    public HouseNumber(String number) {
-        this.number = notBlank(number, "number may not be empty").trim();
+    public StreetName(String name) {
+        this.name = notBlank(name, "name may not be empty").trim();
     }
 
     @Override
     public String toString() {
-        return number;
+        return name;
     }
 
     @Override
     public int hashCode() {
-        return number.hashCode();
+        return name.hashCode();
     }
 
     @Override
@@ -53,28 +54,24 @@ public class HouseNumber {
         if (this == object) {
             return true;
         }
-
-        if (!(object instanceof HouseNumber)) {
+        if (!(object instanceof StreetName)) {
             return false;
         }
+        StreetName name = (StreetName) object;
 
-        HouseNumber number = (HouseNumber) object;
-
-        return toString().equals(number.toString());
+        return toString().equals(name.toString());
     }
 
-    public static class Adapter implements JsonbAdapter<HouseNumber, String> {
+    public static class Adapter implements JsonbAdapter<StreetName, String> {
 
         @Override
-        public HouseNumber adaptFromJson(String number) throws Exception {
-            return new HouseNumber(number);
+        public StreetName adaptFromJson(String name) throws Exception {
+            return new StreetName(name);
         }
 
         @Override
-        public String adaptToJson(HouseNumber number) throws Exception {
-            return number.toString();
+        public String adaptToJson(StreetName name) throws Exception {
+            return name.toString();
         }
-
     }
-
 }

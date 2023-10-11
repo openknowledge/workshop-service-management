@@ -18,6 +18,8 @@ package de.openknowledge.sample.address.application;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.apache.meecrowave.Meecrowave;
+
 /**
  * Application initialization
  */

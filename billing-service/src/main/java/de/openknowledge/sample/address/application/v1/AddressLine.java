@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 import javax.json.bind.adapter.JsonbAdapter;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
-import de.openknowledge.sample.address.domain.AddressLine.Adapter;
+import de.openknowledge.sample.address.application.v1.AddressLine.Adapter;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
@@ -35,6 +35,30 @@ public class AddressLine {
 
     public AddressLine(String line) {
         this.line = notNull(line, "line may not be null").trim();
+    }
+
+    public StreetName getStreetName() {
+        String firstSegment = line.substring(0, line.indexOf(' '));
+        String lastSegment = line.substring(line.lastIndexOf(' ') + 1);
+        if (containsDigit(lastSegment)) {
+            return new StreetName(line.substring(0, line.length() - lastSegment.length()));
+        } else if (containsDigit(firstSegment)) {
+            return new StreetName(line.substring(firstSegment.length()));
+        } else {
+            throw new IllegalStateException("Could not determine street name");
+        }
+    }
+
+    public HouseNumber getHouseNumber() {
+        String firstSegment = line.substring(0, line.indexOf(' '));
+        String lastSegment = line.substring(line.lastIndexOf(' ') + 1);
+        if (containsDigit(lastSegment)) {
+            return new HouseNumber(lastSegment);
+        } else if (containsDigit(firstSegment)) {
+            return new HouseNumber(firstSegment);
+        } else {
+            throw new IllegalStateException("Could not determine house number");
+        }
     }
     
     @Override

@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 import static org.apache.commons.lang3.Validate.notNull;
 import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+import de.openknowledge.sample.address.domain.CityName;
+import de.openknowledge.sample.address.domain.ZipCode;
 
 @Schema(name = "Location")
 public class Location {
@@ -35,6 +39,17 @@ public class Location {
     public Location(ZipCode zipCode, CityName city) {
         this.zipCode = notNull(zipCode, "zip code may not be null");
         this.cityName = notNull(city, "city name may not be null");
+    }
+
+    public Location(City city) {
+        this.zipCode = city.getZipCode();
+        this.cityName = city.getCityName();
+    }
+
+    @JsonbTransient
+    @Schema(hidden = true)
+    public City getCity() {
+        return new City(zipCode + " " + cityName);
     }
 
     @Schema(name = "zipCode", type = STRING, example = "26122")

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 
 import static org.apache.commons.lang3.Validate.notNull;
@@ -24,7 +24,9 @@ import javax.json.bind.annotation.JsonbTypeAdapter;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import de.openknowledge.sample.address.domain.City.Adapter;
+import de.openknowledge.sample.address.application.v1.City.Adapter;
+import de.openknowledge.sample.address.domain.CityName;
+import de.openknowledge.sample.address.domain.ZipCode;
 
 @Schema(name = "City", type = STRING, example = "26122 Oldenburg")
 @JsonbTypeAdapter(Adapter.class)
