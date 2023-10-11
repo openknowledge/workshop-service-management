@@ -20,6 +20,7 @@ import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRI
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -29,6 +30,11 @@ public class Street {
 
     private StreetName name;
     private HouseNumber number;
+
+    public Street(AddressLine addressLine) {
+        name = addressLine.getStreetName();
+        number = addressLine.getHouseNumber();
+    }
 
     @JsonbCreator
     public Street(@JsonbProperty("name") StreetName name, @JsonbProperty("number") HouseNumber houseNumber) {
@@ -46,6 +52,12 @@ public class Street {
     @JsonbTypeAdapter(HouseNumber.Adapter.class)
     public HouseNumber getNumber() {
         return number;
+    }
+
+    @JsonbTransient
+    @Schema(hidden = true)
+    public AddressLine getAddressLine() {
+        return new AddressLine(name + " " + number);
     }
 
     @Override
