@@ -13,34 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 
 import static org.apache.commons.lang3.Validate.notNull;
-import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTypeAdapter;
 
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import de.openknowledge.sample.address.domain.Address;
+import de.openknowledge.sample.address.domain.Recipient;
 
-@Schema(name = "Address")
-public class Address {
+public class AddressV1 {
     private Recipient recipient;
     private AddressLine addressLine1;
     private AddressLine addressLine2 = AddressLine.EMPTY;
     private Location location;
 
     @JsonbCreator
-    public Address(@JsonbProperty("recipient") Recipient recipient) {
+    public AddressV1(@JsonbProperty("recipient") Recipient recipient) {
         this.recipient = notNull(recipient, "recipient may not be null");
     }
 
-    public Address(Recipient recipient, AddressLine addressLine1, Location location) {
+    public AddressV1(Recipient recipient, AddressLine addressLine1, Location location) {
         this(recipient);
         setAddressLine1(addressLine1);
         setLocation(location);
+    }
+
+    public AddressV1(Address address) {
+        this(address.getRecipient());
+        setAddressLine1(new AddressLine(address.getAddressLine1().toString()));
+        setAddressLine2(new AddressLine(address.getAddressLine2().toString()));
+        setLocation(new Location(address.getLocation().getZipCode(), address.getLocation().getCityName()));
     }
 
     @JsonbTypeAdapter(Recipient.Adapter.class)
@@ -48,17 +54,23 @@ public class Address {
         return recipient;
     }
 
-    @Schema(name = "addressLine1", type = STRING, example = "Poststr. 1")
     @JsonbTypeAdapter(AddressLine.Adapter.class)
     public AddressLine getAddressLine1() {
         return addressLine1;
+    }
+
+    public Street getStreet() {
+        return new Street(addressLine1);
+    }
+
+    public void setStreet(Street street) {
+        addressLine1 = street.getAddressLine();
     }
 
     public void setAddressLine1(AddressLine addressLine1) {
         this.addressLine1 = addressLine1;
     }
 
-    @Schema(name = "addressLine2", type = STRING, example = "2. OG")
     @JsonbTypeAdapter(AddressLine.Adapter.class)
     public AddressLine getAddressLine2() {
         return addressLine2;
@@ -68,11 +80,27 @@ public class Address {
         this.addressLine2 = addressLine2;
     }
 
+    public City getCity() {
+        return location.getCity();
+    }
+
+    public void setCity(City city) {
+        this.location = new Location(city);
+    }
+
     public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Address toAddress() {
+        Address address = new Address(recipient);
+        address.setAddressLine1(new de.openknowledge.sample.address.domain.AddressLine(addressLine1.toString()));
+        address.setAddressLine2(new de.openknowledge.sample.address.domain.AddressLine(addressLine2.toString()));
+        address.setLocation(new de.openknowledge.sample.address.domain.Location(location.getZipCode(), location.getCityName()));
+        return address;
     }
 }

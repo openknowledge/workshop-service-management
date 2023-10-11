@@ -21,6 +21,9 @@ import org.eclipse.microprofile.openapi.OASFilter;
 import org.eclipse.microprofile.openapi.models.Components;
 import org.eclipse.microprofile.openapi.models.OpenAPI;
 import org.eclipse.microprofile.openapi.models.PathItem;
+import org.eclipse.microprofile.openapi.models.media.Content;
+import org.eclipse.microprofile.openapi.models.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.models.responses.APIResponse;
 
 public class OpenApiFilter implements OASFilter {
 
@@ -34,4 +37,22 @@ public class OpenApiFilter implements OASFilter {
 		components.removeSchema("void");
         components.removeSchema("java_lang_Object");
 	}
+	
+	@Override
+    public RequestBody filterRequestBody(RequestBody requestBody) {
+        requestBody.setContent(filterContent(requestBody.getContent()));
+        return requestBody;
+    }
+
+    @Override
+    public APIResponse filterAPIResponse(APIResponse apiResponse) {
+        apiResponse.setContent(filterContent(apiResponse.getContent()));
+        return apiResponse;
+    }
+
+    public Content filterContent(Content content) {
+        content.removeMediaType("application/json");
+        content.removeMediaType("application/vnd.de.openknowledge.sample.address.v1+json");
+        return content;
+    }
 }

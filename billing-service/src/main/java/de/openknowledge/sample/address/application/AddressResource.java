@@ -45,8 +45,6 @@ import de.openknowledge.sample.address.domain.CustomerNumber;
  */
 @ApplicationScoped
 @Path("/billing-addresses")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public class AddressResource {
 
     private final static Logger LOGGER = Logger.getLogger(AddressResource.class.getSimpleName());
@@ -56,7 +54,10 @@ public class AddressResource {
 
     @GET
     @Path("/{customerNumber}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({
+        "application/vnd.de.openknowledge.sample.address.v1+json",
+        "application/vnd.de.openknowledge.sample.address.v2+json",
+        "application/json"})
     public Address getAddress(
         @Parameter(
             description = "The business identifier of a customer ",
@@ -71,7 +72,10 @@ public class AddressResource {
 
     @POST
     @Path("/{customerNumber}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({
+        "application/vnd.de.openknowledge.sample.address.v1+json",
+        "application/vnd.de.openknowledge.sample.address.v2+json",
+        "application/json"})
     public Response setAddress(
         @Parameter(
             description = "The business identifier of a customer ",

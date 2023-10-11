@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.openknowledge.sample.address.domain;
+package de.openknowledge.sample.address.application.v1;
 
 import static org.apache.commons.lang3.Validate.notNull;
 import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;

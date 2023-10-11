@@ -1,0 +1,110 @@
+openapi: "3.0.1"
+info:
+  title: Billing Service V1
+  version: 1.1.0
+components:
+  schemas:
+    Address:
+      properties:
+        city:
+          type: "string"
+          example: "26122 Oldenburg"
+        street:
+          type: "object"
+          $ref: "#/components/schemas/Street"
+        recipient:
+          type: "string"
+          example: "Max Mustermann"
+        addressLine1:
+          type: "string"
+          example: "Poststr. 1"
+        location:
+          type: "object"
+          $ref: "#/components/schemas/Location"
+        addressLine2:
+          type: "string"
+          example: "2. OG"
+      type: "object"
+    Location:
+      properties:
+        zipCode:
+          type: "string"
+          example: "26122"
+        cityName:
+          type: "string"
+          example: "Oldenburg"
+      type: "object"
+    Street:
+      properties:
+        number:
+          type: "string"
+          example: "1"
+        name:
+          type: "string"
+          example: "Poststr."
+      type: "object"
+paths:
+  /billing-addresses/{customerNumber}:
+    get:
+      parameters:
+      - name: "customerNumber"
+        in: "path"
+        description: "The business identifier of a customer "
+        required: true
+        allowEmptyValue: false
+        example: "0815"
+        allowReserved: false
+        schema:
+          type: "string"
+      operationId: "getAddress"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: "object"
+                $ref: "#/components/schemas/Address"
+          description: "default response"
+        default:
+          content:
+            application/json:
+              schema:
+                type: "object"
+                $ref: "#/components/schemas/Address"
+          description: "default response"
+    post:
+      parameters:
+      - name: "customerNumber"
+        in: "path"
+        description: "The business identifier of a customer "
+        required: true
+        allowEmptyValue: false
+        example: "0815"
+        allowReserved: false
+        schema:
+          type: "string"
+      operationId: "setAddress"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: "object"
+                nullable: true
+          description: "default response"
+        default:
+          content:
+            application/json:
+              schema:
+                properties: {}
+                type: "object"
+                nullable: true
+          description: "default response"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              $ref: "#/components/schemas/Address"
+            required: true
