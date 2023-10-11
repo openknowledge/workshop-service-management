@@ -14,4 +14,4 @@ COPY --from=mvn /usr/src/online-shop/target/customer-service.war /opt/customer-s
 COPY src/main/resources/log4j2.xml /opt/log4j2.xml
 COPY opentelemetry-javaagent.jar /opt/opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "--illegal-access=permit", "-javaagent:/opt/opentelemetry-javaagent.jar" , "-Dotel.service.name=customer-service", "-Dotel.propagators=b3", "-Dotel.traces.exporter=jaeger", "-Dotel.exporter.otlp.endpoint=collector.linkerd-jaeger:55678" , "-Djava.net.preferIPv4Stack=true", "-Dlog4j2.configurationFile=/opt/log4j2.xml", "-jar", "/opt/meecrowave-runner.jar", "--webapp", "/opt/customer-service.war"]
+ENTRYPOINT ["java", "--illegal-access=permit", "-javaagent:/opt/opentelemetry-javaagent.jar" , "-Dotel.service.name=customer-service", "-Dotel.propagators=b3", "-Dotel.exporter.otlp.endpoint=http://collector.linkerd-jaeger:4317", "-Djava.net.preferIPv4Stack=true", "-Dlog4j2.configurationFile=/opt/log4j2.xml", "-jar", "/opt/meecrowave-runner.jar", "--webapp", "/opt/customer-service.war"]
