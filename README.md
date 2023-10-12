@@ -114,6 +114,16 @@ To open the dashboard with a port-forward:
 linkerd viz dashboard &
 ```
 
+### Install LinkerD Jaeger
+
+To also include the Tracing implementation of LinkerD we can install it via linkerD itself with 
+the following commands
+
+```shell
+linkerd jaeger install | kubectl apply -f -
+linkerd jaeger dashboard 
+```
+
 ### Check what is running
 
 To check what is running on the cluster, you can use kubectl to navigate through the cluster.
