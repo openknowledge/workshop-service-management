@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: pact
-          image: pactfoundation/pact-broker:latest
+          image: pactfoundation/pact-broker:latest-multi
           ports:
             - containerPort: 8080
               name: http
@@ -29,7 +29,24 @@ spec:
               value: INFO
             - name: PACT_BROKER_SQL_LOG_LEVEL
               value: DEBUG
-            - name: PACT_BROKER_DATABASE_ADAPTER
-              value: sqlite
+            - name: PACT_BROKER_DATABASE_USERNAME
+              value: postgres
+            - name: PACT_BROKER_DATABASE_PASSWORD
+              value: postgres
+            - name: PACT_BROKER_DATABASE_HOST
+              value: localhost
             - name: PACT_BROKER_DATABASE_NAME
-              value: pact_broker.sqlite
+              value: pact_broker
+
+        - name: postgres
+          image: postgres:latest
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_DB
+              value: pact_broker
+          ports:
+            - containerPort: 5432
+              name: postgres
