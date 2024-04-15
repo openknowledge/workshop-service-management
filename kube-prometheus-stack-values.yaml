@@ -1,11 +1,9 @@
 prometheus:
   ingress:
     enabled: true
+    ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
-      - prometheus.localhost
-  service:
-    type: NodePort
-    nodePort: 30090
+      - prometheus.workshopcluster
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
@@ -15,13 +13,11 @@ grafana:
   defaultDashboardsEnabled: true
   adminUser: admin
   adminPassword: admin
-  service:
-    type: NodePort
-    nodePort: 30030
   ingress:
     enabled: true
+    ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
-      - grafana.localhost
+      - grafana.workshopcluster
   additionalDataSources:
     - name: loki
       type: loki

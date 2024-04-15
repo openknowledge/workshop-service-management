@@ -13,5 +13,6 @@ spec:
       type: prometheus
   ingress:
     enabled: true
+    ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
-      - jaeger.localhost
+      - jaeger.workshopcluster

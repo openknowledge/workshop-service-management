@@ -5,6 +5,10 @@ loki:
   auth_enabled: false
   commonConfig:
     replication_factor: 1
+  useTestSchema: true
+chunksCache:
+  # -- Specifies whether memcached based chunks-cache should be enabled
+  enabled: false
 read:
   replicas: 1
 write:

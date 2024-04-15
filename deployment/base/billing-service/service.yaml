@@ -5,12 +5,11 @@ metadata:
 spec:
   selector:
     app: billing-service
-  type: NodePort
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      nodePort: 30081
       name: service
     - protocol: TCP
       port: 8888

@@ -4,19 +4,19 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: docker.host.internal:5000/address-validation
+    - image: okworkshopacr.azurecr.io/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: docker.host.internal:5000/billing
+    - image: okworkshopacr.azurecr.io/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: docker.host.internal:5000/customer
+    - image: okworkshopacr.azurecr.io/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: docker.host.internal:5000/delivery
+    - image: okworkshopacr.azurecr.io/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
@@ -24,13 +24,11 @@ build:
 deploy:
   helm:
     releases:
-      - name: ingress-nginx
-        repo: https://kubernetes.github.io/ingress-nginx
-        remoteChart: ingress-nginx
-        namespace: ingress-nginx
-        createNamespace: true
-        valuesFiles:
-          - ./ingress-nginx-values.yaml
+#      - name: ingress-nginx
+#        repo: https://kubernetes.github.io/ingress-nginx
+#        remoteChart: ingress-nginx
+#        namespace: ingress-nginx
+#        createNamespace: true
       - name: kube-prometheus-stack
         repo: https://prometheus-community.github.io/helm-charts
         remoteChart: kube-prometheus-stack
@@ -50,13 +48,13 @@ deploy:
         remoteChart: jaeger-operator
         namespace: observability
         createNamespace: true
-        valuesFiles:
-          - ./jaeger-operator-values.yaml
       - name: backstage
         repo: https://backstage.github.io/charts
         remoteChart: backstage
         namespace: observability
         createNamespace: true
+        valuesFiles:
+          - ./backstage-values.yml
       - name: opentelemetry-operator
         repo: https://open-telemetry.github.io/opentelemetry-helm-charts
         remoteChart: opentelemetry-operator
