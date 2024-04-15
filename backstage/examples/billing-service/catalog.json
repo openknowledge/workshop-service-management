@@ -11,6 +11,7 @@
     },
     "spec": {
       "type": "service",
+      "description": "This is the description of the billing service.",
       "lifecycle": "experimental",
       "owner": "guests",
       "providesApis": [
@@ -24,6 +25,10 @@
     "kind": "API",
     "metadata": {
       "name": "billing-service-api",
+      "links": {
+        "url": "http://billing.workshopcluster",
+        "title": "Billing Service"
+      },
       "annotations": {
         "backstage.io/managed-by-origin-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml",
         "backstage.io/managed-by-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml"
