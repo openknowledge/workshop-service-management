@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ./observability
+  - ./backstage
   - ./production-namespace.yaml
   - ./address-validation-service
   - ./billing-service
