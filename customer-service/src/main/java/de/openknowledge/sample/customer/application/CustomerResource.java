@@ -21,25 +21,26 @@ import de.openknowledge.sample.address.domain.DeliveryAddressRepository;
 import de.openknowledge.sample.customer.domain.Customer;
 import de.openknowledge.sample.customer.domain.CustomerNumber;
 import de.openknowledge.sample.customer.domain.CustomerRepository;
-
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.metrics.DoubleHistogram;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.SpanAttribute;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
@@ -47,13 +48,8 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.common.AttributeKey;
-import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.metrics.DoubleHistogram;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.instrumentation.annotations.SpanAttribute;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
+import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.OBJECT;
+import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
 /**
  * RESTFul endpoint for customers
@@ -90,6 +86,7 @@ public class CustomerResource {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
+    @APIResponse(responseCode = "201", headers = @Header(name = "Location", description = "contains the url of the created customer"))
     public Response createCustomer(Customer customer, @Context UriInfo uri) throws URISyntaxException {
         LOG.info("RESTful call 'POST new customer'");
         customerRepository.persist(customer);
@@ -99,8 +96,15 @@ public class CustomerResource {
     @GET
     @Path("/{customerNumber}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Customer getCustomer(@PathParam("customerNumber") CustomerNumber customerNumber) {
-        LOG.info("RESTful call 'GET customer'");
+    public Customer getCustomer(
+        @Parameter(
+            description = "The business identifier of a customer ",
+            required = true,
+            example = "0815",
+            schema = @Schema(type = STRING))
+        @PathParam("customerNumber") CustomerNumber customerNumber) {
+
+    	LOG.info("RESTful call 'GET customer'");
         Customer customer = customerRepository.find(customerNumber).orElseThrow(customerNotFound(customerNumber));
         billingAddressRepository.find(customerNumber).ifPresent(customer::setBillingAddress);
         deliveryAddressRepository.find(customerNumber).ifPresent(customer::setDeliveryAddress);
@@ -110,7 +114,15 @@ public class CustomerResource {
     @PUT
     @Path("/{customerNumber}/billing-address")
     @Produces(MediaType.APPLICATION_JSON)
-    public void setBillingAddress(@PathParam("customerNumber") CustomerNumber customerNumber, Address billingAddress) {
+    @APIResponse(responseCode = "204", description = "No content", content = @Content(schema = @Schema(type = OBJECT, nullable = true)))
+    public void setBillingAddress(
+        @Parameter(
+            description = "The business identifier of a customer ",
+            required = true,
+            example = "0815",
+            schema = @Schema(type = STRING))
+        @PathParam("customerNumber") CustomerNumber customerNumber, Address billingAddress) {
+
         LOG.info("RESTful call 'PUT billing address'");
         customerRepository.find(customerNumber).orElseThrow(customerNotFound(customerNumber));
         billingAddressRepository.update(customerNumber, billingAddress);
@@ -123,8 +135,17 @@ public class CustomerResource {
     @PUT
     @Path("/{customerNumber}/delivery-address")
     @Produces(MediaType.APPLICATION_JSON)
+    @APIResponse(responseCode = "204", description = "No content", content = @Content(schema = @Schema(type = OBJECT, nullable = true)))
     @WithSpan("Change Delivery Address for Customer")
-    public void setDeliveryAddress(@SpanAttribute("customerNumber") @PathParam("customerNumber") CustomerNumber customerNumber,
+    public void setDeliveryAddress(
+            @Parameter(
+                    description = "The business identifier of a customer ",
+                    required = true,
+                    example = "0815",
+                    schema = @Schema(type = STRING))
+            @SpanAttribute("customerNumber")
+            @PathParam("customerNumber")
+            CustomerNumber customerNumber,
                                    @SpanAttribute("newCustomerAddress") Address deliveryAddress) {
         Instant start = Instant.now();
         LOG.info("RESTful call 'PUT delivery address'");

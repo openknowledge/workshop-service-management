@@ -4,14 +4,19 @@
     "kind": "Component",
     "metadata": {
       "name": "customer-service",
+      "description": "This is the description of the customer service.",
+      "title": "Customer Service",
+      "links": {
+        "url": "http://customer.workshopcluster",
+        "title": "Customer Service"
+      },
       "annotations": {
         "backstage.io/managed-by-origin-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml",
         "backstage.io/managed-by-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml"
       }
     },
     "spec": {
-      "type": "service",
-      "description": "This is the description of the customer service.",
+      "type": "public-api",
       "lifecycle": "experimental",
       "owner": "guests",
       "providesApis": ["customer-service-api"],
@@ -23,10 +28,8 @@
     "kind": "API",
     "metadata": {
       "name": "customer-service-api",
-      "links": {
-        "url": "http://customer.workshopcluster",
-        "title": "Customer Service"
-      },
+      "description": "This is the description of the customer service api.",
+      "title": "Customer Service API",
       "annotations": {
         "backstage.io/managed-by-origin-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml",
         "backstage.io/managed-by-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml"

@@ -15,31 +15,27 @@
  */
 package de.openknowledge.sample.address.application;
 
+import de.openknowledge.sample.address.domain.Address;
+import de.openknowledge.sample.address.domain.AddressRepository;
+import de.openknowledge.sample.address.domain.AddressValidationService;
+import de.openknowledge.sample.address.domain.CustomerNumber;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.SpanAttribute;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
-
-import java.util.Random;
-import java.util.logging.Logger;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.Random;
+import java.util.logging.Logger;
 
-import de.openknowledge.sample.address.domain.Address;
-import de.openknowledge.sample.address.domain.AddressValidationService;
-import de.openknowledge.sample.address.domain.AddressRepository;
-import de.openknowledge.sample.address.domain.CustomerNumber;
+import static org.eclipse.microprofile.openapi.annotations.enums.SchemaType.STRING;
 
 /**
  * RESTFul endpoint for delivery addresses
@@ -61,7 +57,15 @@ public class AddressesResource {
     @Path("/{customerNumber}")
     @Produces(MediaType.APPLICATION_JSON)
     @WithSpan("Get Customer Address by Customer Number")
-    public Address getAddress(@SpanAttribute("customerNumber") @PathParam("customerNumber") CustomerNumber number) {
+    public Address getAddress(
+            @Parameter(
+                    description = "The business identifier of a customer ",
+                    required = true,
+                    example = "0815",
+                    schema = @Schema(type = STRING))
+            @SpanAttribute("customerNumber")
+            @PathParam("customerNumber")
+            CustomerNumber number) {
         LOG.info("RESTful call 'GET address'");
         Span.current().addEvent("RESTful call 'GET address'");
 
@@ -71,7 +75,15 @@ public class AddressesResource {
     @POST
     @Path("/{customerNumber}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setAddress(@PathParam("customerNumber") CustomerNumber customerNumber, Address address,
+    public Response setAddress(
+            @Parameter(
+                    description = "The business identifier of a customer ",
+                    required = true,
+                    example = "0815",
+                    schema = @Schema(type = STRING))
+            @PathParam("customerNumber")
+            CustomerNumber customerNumber,
+            Address address,
             @Context UriInfo uri) throws InterruptedException {
 
         if (RAND.nextBoolean()){
