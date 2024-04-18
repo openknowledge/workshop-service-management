@@ -3,3 +3,5 @@
 !.gitignore
 !.github
 *.iml
+/terraform/terraform.tfstate
+.terraform
