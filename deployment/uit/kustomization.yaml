@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: production
+
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: address-validation-deployment
+    path: ./patches/address-acr-name-patch.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: billing-deployment
+    path: ./patches/billing-acr-name-patch.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: customer-deployment
+    path: ./patches/customer-acr-name-patch.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: delivery-deployment
+    path: ./patches/delivery-acr-name-patch.yaml
+
+resources:
+  - ../base/

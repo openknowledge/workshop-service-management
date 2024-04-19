@@ -17,5 +17,5 @@ module "aks" {
   resource_group_name = azurerm_resource_group.workshop.name
   acr_id = module.acr.workshop_acr_id
 
-  count = 2
+  count = 10
 }
