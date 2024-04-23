@@ -3,6 +3,7 @@ prometheus:
     enabled: true
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
+      - prometheus.ok-cluster.azure.cloud.openknowledge.services
       - prometheus.api-workshop-0.azure.cloud.openknowledge.services
       - prometheus.api-workshop-1.azure.cloud.openknowledge.services
       - prometheus.api-workshop-2.azure.cloud.openknowledge.services
@@ -26,6 +27,7 @@ grafana:
     enabled: true
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
+      - grafana.ok-cluster.azure.cloud.openknowledge.services
       - grafana.api-workshop-0.azure.cloud.openknowledge.services
       - grafana.api-workshop-1.azure.cloud.openknowledge.services
       - grafana.api-workshop-2.azure.cloud.openknowledge.services

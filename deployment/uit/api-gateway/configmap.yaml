@@ -9,14 +9,14 @@ data:
     events {
     }
     http {
-      limit_req_zone $binary_remote_addr zone=customer-limit:10m rate=1r/s;
+      # limit_req_zone $binary_remote_addr zone=customer-limit:10m rate=1r/s;
     
       server {
       
       listen 80;
       
       location /customers {
-        limit_req zone=customer-limit; #burst=20 nodelay;
+        # limit_req zone=customer-limit; #burst=20 nodelay;
         proxy_pass http://customer-service:8080/customers;
         }
       }

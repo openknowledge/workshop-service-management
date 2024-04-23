@@ -15,6 +15,7 @@ spec:
     enabled: true
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
+      - jaeger.ok-cluster.azure.cloud.openknowledge.services
       - jaeger.api-workshop-management-0.azure.cloud.openknowledge.services
       - jaeger.api-workshop-management-1.azure.cloud.openknowledge.services
       - jaeger.api-workshop-management-2.azure.cloud.openknowledge.services
