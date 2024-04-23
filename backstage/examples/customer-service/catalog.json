@@ -5,7 +5,7 @@
     "metadata": {
       "name": "customer-service",
       "links": [{
-        "url": "http://customer.ok-cluster.azure.cloud.openknowledge.services/customers",
+        "url": "http://customer.ok-cluster.azure.cloud.openknowledge.services/webjars/swagger-ui/index.html",
         "title": "Customer Service"
       }],
       "annotations": {
