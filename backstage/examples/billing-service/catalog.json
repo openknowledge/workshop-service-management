@@ -10,7 +10,7 @@
       }
     },
     "spec": {
-      "type": "b2b-service",
+      "type": "business-api",
       "description": "This is the description of the billing service.",
       "lifecycle": "experimental",
       "owner": "ok-user-team",

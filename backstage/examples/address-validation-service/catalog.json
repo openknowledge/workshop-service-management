@@ -10,7 +10,7 @@
       }
     },
     "spec": {
-      "type": "internal-service",
+      "type": "system-api",
       "description": "This is the description of the address-validation service.",
       "lifecycle": "experimental",
       "owner": "ok-user-team",

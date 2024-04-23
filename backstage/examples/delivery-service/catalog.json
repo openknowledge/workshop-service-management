@@ -10,7 +10,7 @@
       }
     },
     "spec": {
-      "type": "service",
+      "type": "business-api",
       "description": "This is the description of the delivery service.",
       "lifecycle": "experimental",
       "owner": "ok-delivery-team",
