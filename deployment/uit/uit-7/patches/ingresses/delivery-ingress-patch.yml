@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/rules/0/host
+  value: delivery.api-workshop-7.azure.cloud.openknowledge.services

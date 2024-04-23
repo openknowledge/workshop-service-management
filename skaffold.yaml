@@ -4,27 +4,26 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: okworkshopacr.azurecr.io/address-validation
+    - image: workshopapimanagementacruit.azurecr.io/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/billing
+    - image: workshopapimanagementacruit.azurecr.io/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/customer
+    - image: workshopapimanagementacruit.azurecr.io/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/delivery
+    - image: workshopapimanagementacruit.azurecr.io/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/backstage
+    - image: workshopapimanagementacruit.azurecr.io/backstage
       context: backstage
       docker:
         dockerfile: Dockerfile
-
 deploy:
   helm:
     releases:
@@ -73,10 +72,91 @@ deploy:
           - ./promtail-values.yaml
   statusCheckDeadlineSeconds: 300
   tolerateFailuresUntilDeadline: true
-
   kubectl: {}
 
 manifests:
   kustomize:
     paths:
       - deployment/base
+
+profiles:
+  - name: uit-0
+    activation:
+      - kubeContext: workshop-cluster-uit-0
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-0
+  - name: uit-1
+    activation:
+      - kubeContext: workshop-cluster-uit-1
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-1
+  - name: uit-2
+    activation:
+      - kubeContext: workshop-cluster-uit-2
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+         - deployment/uit/uit-2
+  - name: uit-3
+    activation:
+      - kubeContext: workshop-cluster-uit-3
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-3
+  - name: uit-4
+    activation:
+      - kubeContext: workshop-cluster-uit-4
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-4
+  - name: uit-5
+    activation:
+      - kubeContext: workshop-cluster-uit-5
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-5
+  - name: uit-6
+    activation:
+      - kubeContext: workshop-cluster-uit-6
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-6
+  - name: uit-7
+    activation:
+      - kubeContext: workshop-cluster-uit-7
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-7
+  - name: uit-8
+    activation:
+      - kubeContext: workshop-cluster-uit-8
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-8
+  - name: uit-9
+    activation:
+      - kubeContext: workshop-cluster-uit-9
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/uit/uit-9

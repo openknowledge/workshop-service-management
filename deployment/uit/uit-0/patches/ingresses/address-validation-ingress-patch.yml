@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/rules/0/host
+  value: address-validation.api-workshop-0.azure.cloud.openknowledge.services

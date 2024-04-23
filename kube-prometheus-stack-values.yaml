@@ -3,7 +3,16 @@ prometheus:
     enabled: true
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
-      - prometheus.workshopcluster
+      - prometheus.api-workshop-0.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-1.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-2.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-3.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-4.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-5.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-6.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-7.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-8.azure.cloud.openknowledge.services
+      - prometheus.api-workshop-9.azure.cloud.openknowledge.services
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
@@ -17,7 +26,16 @@ grafana:
     enabled: true
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
-      - grafana.workshopcluster
+      - grafana.api-workshop-0.azure.cloud.openknowledge.services
+      - grafana.api-workshop-1.azure.cloud.openknowledge.services
+      - grafana.api-workshop-2.azure.cloud.openknowledge.services
+      - grafana.api-workshop-3.azure.cloud.openknowledge.services
+      - grafana.api-workshop-4.azure.cloud.openknowledge.services
+      - grafana.api-workshop-5.azure.cloud.openknowledge.services
+      - grafana.api-workshop-6.azure.cloud.openknowledge.services
+      - grafana.api-workshop-7.azure.cloud.openknowledge.services
+      - grafana.api-workshop-8.azure.cloud.openknowledge.services
+      - grafana.api-workshop-9.azure.cloud.openknowledge.services
   additionalDataSources:
     - name: loki
       type: loki

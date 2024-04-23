@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/rules/0/host
+  value: pact.api-workshop-4.azure.cloud.openknowledge.services
