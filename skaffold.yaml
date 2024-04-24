@@ -4,23 +4,23 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: okworkshopacr.azurecr.io/address-validation
+    - image: workshopapimanagementacruit.azurecr.io/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/billing
+    - image: workshopapimanagementacruit.azurecr.io/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/customer
+    - image: workshopapimanagementacruit.azurecr.io/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/delivery
+    - image: workshopapimanagementacruit.azurecr.io/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
-    - image: okworkshopacr.azurecr.io/backstage
+    - image: workshopapimanagementacruit.azurecr.io/backstage
       context: backstage
       docker:
         dockerfile: Dockerfile
