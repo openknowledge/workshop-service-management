@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   title: Billing Service V1
-  version: 1.1.0
+  version: "1.1.1"
 components:
   schemas:
     Address:
@@ -64,10 +64,18 @@ paths:
               schema:
                 type: "object"
                 $ref: "#/components/schemas/Address"
+            application/vnd.de.openknowledge.sample.address.v1+json:
+              schema:
+                type: "object"
+                $ref: "#/components/schemas/Address"
           description: "default response"
         default:
           content:
             application/json:
+              schema:
+                type: "object"
+                $ref: "#/components/schemas/Address"
+            application/vnd.de.openknowledge.sample.address.v1+json:
               schema:
                 type: "object"
                 $ref: "#/components/schemas/Address"
@@ -92,12 +100,22 @@ paths:
                 properties: {}
                 type: "object"
                 nullable: true
+            application/vnd.de.openknowledge.sample.address.v1+json:
+              schema:
+                properties: {}
+                type: "object"
+                nullable: true
           description: "default response"
         default:
           content:
             application/json:
               schema:
                 properties: {}
+                type: "object"
+                nullable: true
+            application/vnd.de.openknowledge.sample.address.v1+json:
+              schema:
+                properties: { }
                 type: "object"
                 nullable: true
           description: "default response"
@@ -108,3 +126,7 @@ paths:
               type: "object"
               $ref: "#/components/schemas/Address"
             required: true
+          application/vnd.de.openknowledge.sample.address.v1+json:
+            schema:
+              type: "object"
+              $ref: "#/components/schemas/Address"

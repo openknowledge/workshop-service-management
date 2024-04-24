@@ -6,7 +6,7 @@
       "name": "address-validation-service",
       "links": [{
         "url": "http://address-validation.ok-cluster.azure.cloud.openknowledge.services/webjars/swagger-ui/index.html",
-        "title": "Customer Service"
+        "title": "Address Validation Service"
       }],
       "annotations": {
         "backstage.io/managed-by-origin-location": "url:http://localhost:9080/service-repository/api/backstage/catalog-info.yaml",
