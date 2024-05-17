@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/rules/0/host
-  value: backstage.api-workshop-0.azure.cloud.openknowledge.services

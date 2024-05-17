@@ -56,6 +56,8 @@ deploy:
         remoteChart: opentelemetry-operator
         namespace: observability
         createNamespace: true
+        valuesFiles:
+          - ./otel-operator-values.yaml
       - name: loki
         repo: https://grafana.github.io/helm-charts
         remoteChart: loki
@@ -80,83 +82,43 @@ manifests:
       - deployment/base
 
 profiles:
-  - name: uit-0
+  - name: adc-1
     activation:
-      - kubeContext: workshop-cluster-uit-0
+      - kubeContext: workshop-cluster-adc-1
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-          - deployment/uit/uit-0
-  - name: uit-1
+          - deployment/api-design-camp/adc-1
+  - name: adc-2
     activation:
-      - kubeContext: workshop-cluster-uit-1
+      - kubeContext: workshop-cluster-adc-2
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-          - deployment/uit/uit-1
-  - name: uit-2
+         - deployment/api-design-camp/adc-2
+  - name: adc-3
     activation:
-      - kubeContext: workshop-cluster-uit-2
+      - kubeContext: workshop-cluster-adc-3
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-         - deployment/uit/uit-2
-  - name: uit-3
+          - deployment/api-design-camp/adc-3
+  - name: adc-4
     activation:
-      - kubeContext: workshop-cluster-uit-3
+      - kubeContext: workshop-cluster-adc-4
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-          - deployment/uit/uit-3
-  - name: uit-4
+          - deployment/api-design-camp/adc-4
+  - name: adc-5
     activation:
-      - kubeContext: workshop-cluster-uit-4
+      - kubeContext: workshop-cluster-adc-5
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-          - deployment/uit/uit-4
-  - name: uit-5
-    activation:
-      - kubeContext: workshop-cluster-uit-5
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/uit/uit-5
-  - name: uit-6
-    activation:
-      - kubeContext: workshop-cluster-uit-6
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/uit/uit-6
-  - name: uit-7
-    activation:
-      - kubeContext: workshop-cluster-uit-7
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/uit/uit-7
-  - name: uit-8
-    activation:
-      - kubeContext: workshop-cluster-uit-8
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/uit/uit-8
-  - name: uit-9
-    activation:
-      - kubeContext: workshop-cluster-uit-9
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/uit/uit-9
+          - deployment/api-design-camp/adc-5

@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/rules/0/host
-  value: billing.api-workshop-9.azure.cloud.openknowledge.services

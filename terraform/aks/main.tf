@@ -20,15 +20,7 @@ resource "azurerm_kubernetes_cluster" "workshop_aks" {
   }
 }
 
-#resource "azurerm_kubernetes_cluster_node_pool" "uit_workshop_nodepool" {
-#  kubernetes_cluster_id = azurerm_kubernetes_cluster.uit_workshop_aks.id
-#  name                  = "uit-workshop-nodepool"
-#  vm_size               = "Standard B2ms"
-#  node_count = 2
-#  max_pods = 100
-#}
-
-resource "azurerm_role_assignment" "uit_workshop_aks_acr" {
+resource "azurerm_role_assignment" "workshop_aks_acr" {
   principal_id                     = azurerm_kubernetes_cluster.workshop_aks.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
   scope                            = var.acr_id
