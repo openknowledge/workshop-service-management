@@ -155,6 +155,35 @@ curl --location --request POST 'localhost:30083/delivery-addresses/0815' \
 
 Now you should see some traces in the Grafana Tracing Dashboard.
 
+## Aufsetzen des Clusters auf dem Azure Cluster
+
+- Readme anpassen: #workshop #api-management
+    - az login
+    - az account set --subscription <sub-id>
+    - cd terraform
+    - terraform init
+    - terraform apply
+        - Optional: Wenn in neuer subscription - Quota Limit der Standard Bs Family erhöhen via Request in der Azure Platform. 4 Quota werden pro Cluster in unserem default setup benötigt. Wir benutzen 2 Nodes der Standard B2s VM Size die jeweils 2 Quota verbrauchen. Bei 5 Clustern ist also ein min. Quota Limit von 20 notwendig.
+        - workshop namen eingeben
+    - Wildcard A Records im Azure Portal manuell eintragen indem die externe IP aus dem Service des ip routing ingress controllers vom jeweiligen Cluster ausgelesen wird.
+    - Unter deployment einen stage Ordner anlegen (bzw. von einem vorherigen workshop kopieren) und so viele unterordner wie cluster benötigt werden
+    - Der Name für den ACR muss geupdated werden
+        - Dies muss in den Ingress Patches passieren
+        - und in der skaffold.yaml
+    - Falls gewünscht auch die Ingresses an folgenden Stellen updaten. (bspw. wenn die domain nicht mehr *.api-workshop-0... sonder *.my-workshop-0 heißen soll)
+        - deployment/<stage>/<cluster>/patches/ingresses
+        - ./kube-prometheus-stack-values.yaml
+        - deployment/base/observability/jaeger
+    - via azure portal aks connect befehl kopieren und ausführen um die lokale kubeconfig erweitern
+        - z.B. az aks get-credentials --resource-group rg-workshop-apidesigncamp --name workshop-cluster-apidesigncamp-1 --overwrite-existing
+    - in der skaffold yaml die profiles anpassen auf die neuen contexts und paths zur stage anpassen.
+    - az acr login --name <acr-name>
+    - skaffold run ausführen
+        - k config use-context <context>
+        - skaffold run
+    - Am Ende nochmal auf allen Clustern die anwendungspods im production namespace neustarten, damit der otel-collector injected wird. (danach sind 2/2 container ready statt 1/1)
+
+
 ## Cleaning up the cluster
 
 To clean up the cluster from everything that skaffold has installed, execute the following command:

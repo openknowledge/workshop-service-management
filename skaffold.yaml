@@ -4,23 +4,23 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: workshopapimanagementacruit.azurecr.io/address-validation
+    - image: workshopapimanagementacrapidesigncamp.azurecr.io/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacruit.azurecr.io/billing
+    - image: workshopapimanagementacrapidesigncamp.azurecr.io/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacruit.azurecr.io/customer
+    - image: workshopapimanagementacrapidesigncamp.azurecr.io/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacruit.azurecr.io/delivery
+    - image: workshopapimanagementacrapidesigncamp.azurecr.io/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacruit.azurecr.io/backstage
+    - image: workshopapimanagementacrapidesigncamp.azurecr.io/backstage
       context: backstage
       docker:
         dockerfile: Dockerfile
@@ -84,7 +84,7 @@ manifests:
 profiles:
   - name: adc-1
     activation:
-      - kubeContext: workshop-cluster-adc-1
+      - kubeContext: workshop-cluster-apidesigncamp-1
     patches:
       - op: replace
         path: /manifests/kustomize/paths
@@ -92,7 +92,7 @@ profiles:
           - deployment/api-design-camp/adc-1
   - name: adc-2
     activation:
-      - kubeContext: workshop-cluster-adc-2
+      - kubeContext: workshop-cluster-apidesigncamp-2
     patches:
       - op: replace
         path: /manifests/kustomize/paths
@@ -100,7 +100,7 @@ profiles:
          - deployment/api-design-camp/adc-2
   - name: adc-3
     activation:
-      - kubeContext: workshop-cluster-adc-3
+      - kubeContext: workshop-cluster-apidesigncamp-3
     patches:
       - op: replace
         path: /manifests/kustomize/paths
@@ -108,7 +108,7 @@ profiles:
           - deployment/api-design-camp/adc-3
   - name: adc-4
     activation:
-      - kubeContext: workshop-cluster-adc-4
+      - kubeContext: workshop-cluster-apidesigncamp-4
     patches:
       - op: replace
         path: /manifests/kustomize/paths
@@ -116,7 +116,7 @@ profiles:
           - deployment/api-design-camp/adc-4
   - name: adc-5
     activation:
-      - kubeContext: workshop-cluster-adc-5
+      - kubeContext: workshop-cluster-apidesigncamp-5
     patches:
       - op: replace
         path: /manifests/kustomize/paths

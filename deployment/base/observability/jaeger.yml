@@ -16,13 +16,13 @@ spec:
     ingressClassName: webapprouting.kubernetes.azure.com
     hosts:
       - jaeger.ok-cluster.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-0.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-1.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-2.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-3.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-4.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-5.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-6.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-7.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-8.azure.cloud.openknowledge.services
-      - jaeger.api-workshop-management-9.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-0.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-1.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-2.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-3.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-4.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-5.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-6.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-7.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-8.azure.cloud.openknowledge.services
+      - jaeger.api-workshop-9.azure.cloud.openknowledge.services
