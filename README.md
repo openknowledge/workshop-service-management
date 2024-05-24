@@ -159,7 +159,7 @@ Now you should see some traces in the Grafana Tracing Dashboard.
 
 - Readme anpassen: #workshop #api-management
     - az login
-    - az account set --subscription <sub-id>
+    - az account set --subscription \<subscription-id>
     - cd terraform
     - terraform init
     - terraform apply
@@ -171,7 +171,7 @@ Now you should see some traces in the Grafana Tracing Dashboard.
         - Dies muss in den Ingress Patches passieren
         - und in der skaffold.yaml
     - Falls gewünscht auch die Ingresses an folgenden Stellen updaten. (bspw. wenn die domain nicht mehr *.api-workshop-0... sonder *.my-workshop-0 heißen soll)
-        - deployment/<stage>/<cluster>/patches/ingresses
+        - deployment/\<stage>/\<cluster>/patches/ingresses
         - ./kube-prometheus-stack-values.yaml
         - deployment/base/observability/jaeger
     - via azure portal aks connect befehl kopieren und ausführen um die lokale kubeconfig erweitern
@@ -191,11 +191,24 @@ To clean up the cluster from everything that skaffold has installed, execute the
 ```shell
 skaffold delete
 ```
+If you want to delete the Cluster in its whole you could also skip this step and delete the cluster in its entirety.
 
-To also delete the KinD cluster and the docker container that it is running in,
+### KinD 
+To delete the KinD cluster and the docker container that it is running in,
 execute the following commands:
 
 ```shell
 docker container stop workshop-service-mngmt-cluster-control-plane
 kind delete cluster -n workshop-service-mngmt-cluster
 ```
+
+### Azure
+
+To delete the applied Infrastructure on the azure subscription just run:
+
+```shell
+terraform delete
+```
+Be sure that the state that was created during the terraform apply step is available to you either because it
+is still stored in your machine or via a remote state.
+
