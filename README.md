@@ -155,33 +155,43 @@ curl --location --request POST 'localhost:30083/delivery-addresses/0815' \
 
 Now you should see some traces in the Grafana Tracing Dashboard.
 
-## Aufsetzen des Clusters auf dem Azure Cluster
-
-- Readme anpassen: #workshop #api-management
-    - az login
-    - az account set --subscription \<subscription-id>
-    - cd terraform
-    - terraform init
-    - terraform apply
-        - Optional: Wenn in neuer subscription - Quota Limit der Standard Bs Family erhöhen via Request in der Azure Platform. 4 Quota werden pro Cluster in unserem default setup benötigt. Wir benutzen 2 Nodes der Standard B2s VM Size die jeweils 2 Quota verbrauchen. Bei 5 Clustern ist also ein min. Quota Limit von 20 notwendig.
-        - workshop namen eingeben
-    - Wildcard A Records im Azure Portal manuell eintragen indem die externe IP aus dem Service des ip routing ingress controllers vom jeweiligen Cluster ausgelesen wird.
-    - Unter deployment einen stage Ordner anlegen (bzw. von einem vorherigen workshop kopieren) und so viele unterordner wie cluster benötigt werden
-    - Der Name für den ACR muss geupdated werden
-        - Dies muss in den Ingress Patches passieren
-        - und in der skaffold.yaml
-    - Falls gewünscht auch die Ingresses an folgenden Stellen updaten. (bspw. wenn die domain nicht mehr *.api-workshop-0... sonder *.my-workshop-0 heißen soll)
-        - deployment/\<stage>/\<cluster>/patches/ingresses
-        - ./kube-prometheus-stack-values.yaml
-        - deployment/base/observability/jaeger
-    - via azure portal aks connect befehl kopieren und ausführen um die lokale kubeconfig erweitern
-        - z.B. az aks get-credentials --resource-group rg-workshop-apidesigncamp --name workshop-cluster-apidesigncamp-1 --overwrite-existing
-    - in der skaffold yaml die profiles anpassen auf die neuen contexts und paths zur stage anpassen.
-    - az acr login --name <acr-name>
-    - skaffold run ausführen
-        - k config use-context <context>
-        - skaffold run
-    - Am Ende nochmal auf allen Clustern die anwendungspods im production namespace neustarten, damit der otel-collector injected wird. (danach sind 2/2 container ready statt 1/1)
+## Steps to install the Setup on Azure Cloud
+- ```az login```
+- ```az account set --subscription \<subscription-id>```
+- ```cd terraform```
+- ```terraform init```
+- ```terraform apply```
+  - Optional: If you're in a new azure subscription you might need to update the quota limit of the Standard Bs Family.
+    You can do that via a Quota Increase Request. 
+    In our default Setup we need 4 Quota per cluster (2 per Node/VM). We are using 2 Nodes of the Standard B2s VM with 
+    two Quota each.
+    At 5 Clusters we therefore need a Quota Limit of 20 for the Standard B2s Family.
+  - specify the workshop name - this is used for the names of the resources that will be applied. 
+- Create Wildcard A Records in the created Azure DNS Zone. You can get the External IP of the Ingress Nginx Controller 
+  from the Service either via kubectl/k9s or in the azure portal. The service is created with the app-routing module 
+  of aks.
+- Create a stage folder under the deployment folder with the workhosp name. 
+  (At best copy the stage folder of a previous workshop)
+- The Name of the ACR is included in the output of the terraform state. 
+  The Name of the ACR needs to be updated in the following places.
+  - Ingress Patches in the stage folder
+  - skaffold.yml
+- If needed, you can also update the Ingress DNS. If so, you need to do it in the following places 
+  - deployment/\<stage>/\<cluster>/patches/ingresses
+  - ./kube-prometheus-stack-values.yaml
+  - deployment/base/observability/jaeger
+- You need to update your kubeconfig file to be able to connect to the clusters you created. In the Azure Portal AKS view
+  is a connect tab in which you get a command that you can execute for each cluster terraform created.
+  - e.g. ```az aks get-credentials --resource-group rg-workshop-apidesigncamp --name workshop-cluster-apidesigncamp-1 --overwrite-existing```
+- change the profiles in the skaffold.yml to the new contexts and change the paths of those profiles to your 
+  corresponding stage folders
+- ```az acr login --name <acr-name>``` # This is required so that skaffold can push the images to the acr
+- execute ```skaffold run```
+    - kubectl config use-context \<context>
+    - ```skaffold run```
+- To conclude the setup, you need to connect to all clusters and kill all application pods in the production namespace 
+  to achieve that the otel-operator is injecting the otel collector sidecar
+  (afterwards you can see 2/2 ready container instead of 1/1)
 
 
 ## Cleaning up the cluster

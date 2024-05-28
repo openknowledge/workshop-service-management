@@ -22,7 +22,7 @@ kind: User
 metadata:
   name: ok-delivery-member
 spec:
-  memberOf: [ok-team]
+  memberOf: [ok-delivery-team]
 ---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
 apiVersion: backstage.io/v1alpha1
