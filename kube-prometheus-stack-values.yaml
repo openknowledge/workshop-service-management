@@ -1,7 +1,7 @@
 prometheus:
   ingress:
     enabled: true
-    ingressClassName: webapprouting.kubernetes.azure.com
+    ingressClassName: nginx # webapprouting.kubernetes.azure.com
     hosts:
       - prometheus.localhost
       - prometheus.ok-cluster.azure.cloud.openknowledge.services

@@ -91,7 +91,7 @@ manifests:
 profiles:
   - name: local-kind-cluster
     activation:
-      - kubeContext: kind-workshop-service-mngmt-cluster-2
+      - kubeContext: kind-workshop-service-mngmt-cluster
     patches:
       - op: replace
         path: /manifests/kustomize/paths
