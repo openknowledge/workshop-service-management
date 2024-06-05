@@ -87,21 +87,6 @@ To access them via a Domain Name add those entries to the /etc/hosts file.
 127.0.0.1       jaeger.localhost
 ```
 
-#### NodePorts
-
-If you don't have admin rights or do not want to change the /etc/hosts file, the applications
-can be accessed via the exposed NodePorts with the following assigned ports:
-
-```
-For Address Validation: http://localhost:30080
-For Billing: http://localhost:30081
-For Customer: http://localhost:30082
-For Delivery: http://localhost:30083
-For Prometheus: http://localhost:30090
-For Grafana: http://localhost:30030
-For Jaeger: http://localhost:30091
-```
-
 #### Port-Forwarding
 
 If for whatever reason both options above are not working, you can also use port-forwarding to

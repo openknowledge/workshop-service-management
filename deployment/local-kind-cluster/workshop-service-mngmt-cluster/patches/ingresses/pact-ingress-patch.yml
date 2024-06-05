@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/ingressClassName
+  value: nginx
+- op: replace
+  path: /spec/rules/0/host
+  value: pact.localhost

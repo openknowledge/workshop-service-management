@@ -4,23 +4,23 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/address-validation
+    - image: docker.host.internal:5000/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/billing
+    - image: docker.host.internal:5000/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/customer
+    - image: docker.host.internal:5000/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/delivery
+    - image: docker.host.internal:5000/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/backstage
+    - image: docker.host.internal:5000/backstage
       context: backstage
       docker:
         dockerfile: Dockerfile
@@ -35,6 +35,7 @@ deploy:
       - name: kube-prometheus-stack
         repo: https://prometheus-community.github.io/helm-charts
         remoteChart: kube-prometheus-stack
+        version: 58.7.2
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -42,6 +43,7 @@ deploy:
       - name: cert-manager
         repo: https://charts.jetstack.io
         remoteChart: cert-manager
+        version: 1.14.5
         namespace: cert-manager
         createNamespace: true
         setValues:
@@ -49,11 +51,13 @@ deploy:
       - name: jaeger-operator
         repo: https://jaegertracing.github.io/helm-charts
         remoteChart: jaeger-operator
+        version: 2.53.0
         namespace: observability
         createNamespace: true
       - name: opentelemetry-operator
         repo: https://open-telemetry.github.io/opentelemetry-helm-charts
         remoteChart: opentelemetry-operator
+        version: 0.60.0
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -61,6 +65,7 @@ deploy:
       - name: loki
         repo: https://grafana.github.io/helm-charts
         remoteChart: loki
+        version: 6.6.1
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -68,12 +73,14 @@ deploy:
       - name: promtail
         repo: https://grafana.github.io/helm-charts
         remoteChart: promtail
+        version: 6.15.5
         namespace: observability
         createNamespace: true
         valuesFiles:
           - ./promtail-values.yaml
   statusCheckDeadlineSeconds: 300
   tolerateFailuresUntilDeadline: true
+
   kubectl: {}
 
 manifests:
@@ -82,6 +89,14 @@ manifests:
       - deployment/base
 
 profiles:
+  - name: local-kind-cluster
+    activation:
+      - kubeContext: kind-workshop-service-mngmt-cluster-2
+    patches:
+      - op: replace
+        path: /manifests/kustomize/paths
+        value:
+          - deployment/local-kind-cluster/workshop-service-mngmt-cluster
   - name: adc-1
     activation:
       - kubeContext: workshop-cluster-apidesigncamp-1

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-deployment
+  labels:
+    app: billing-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: billing-service
+          image: docker.host.internal:5000/billing:latest
