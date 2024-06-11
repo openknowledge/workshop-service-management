@@ -25,5 +25,5 @@ module "aks" {
   acr_id = module.acr.workshop_acr_id
   vm_size = "Standard_B2ms"
 
-  count = 5
+  count = 1
 }

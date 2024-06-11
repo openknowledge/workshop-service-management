@@ -4,37 +4,33 @@ metadata:
   name: workshop-service-management
 build:
   artifacts:
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/address-validation
+    - image: workshopapimanagementacrmadsummit24.azurecr.io/address-validation
       context: address-validation-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/billing
+    - image: workshopapimanagementacrmadsummit24.azurecr.io/billing
       context: billing-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/customer
+    - image: workshopapimanagementacrmadsummit24.azurecr.io/customer
       context: customer-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/delivery
+    - image: workshopapimanagementacrmadsummit24.azurecr.io/delivery
       context: delivery-service
       docker:
         dockerfile: Dockerfile
-    - image: workshopapimanagementacrapidesigncamp.azurecr.io/backstage
+    - image: workshopapimanagementacrmadsummit24.azurecr.io/backstage
       context: backstage
       docker:
         dockerfile: Dockerfile
 deploy:
   helm:
     releases:
-#      - name: ingress-nginx
-#        repo: https://kubernetes.github.io/ingress-nginx
-#        remoteChart: ingress-nginx
-#        namespace: ingress-nginx
-#        createNamespace: true
       - name: kube-prometheus-stack
         repo: https://prometheus-community.github.io/helm-charts
         remoteChart: kube-prometheus-stack
+        version: 58.7.2
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -42,6 +38,7 @@ deploy:
       - name: cert-manager
         repo: https://charts.jetstack.io
         remoteChart: cert-manager
+        version: 1.14.5
         namespace: cert-manager
         createNamespace: true
         setValues:
@@ -49,11 +46,13 @@ deploy:
       - name: jaeger-operator
         repo: https://jaegertracing.github.io/helm-charts
         remoteChart: jaeger-operator
+        version: 2.53.0
         namespace: observability
         createNamespace: true
       - name: opentelemetry-operator
         repo: https://open-telemetry.github.io/opentelemetry-helm-charts
         remoteChart: opentelemetry-operator
+        version: 0.60.0
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -61,6 +60,7 @@ deploy:
       - name: loki
         repo: https://grafana.github.io/helm-charts
         remoteChart: loki
+        version: 6.6.1
         namespace: observability
         createNamespace: true
         valuesFiles:
@@ -68,12 +68,14 @@ deploy:
       - name: promtail
         repo: https://grafana.github.io/helm-charts
         remoteChart: promtail
+        version: 6.15.5
         namespace: observability
         createNamespace: true
         valuesFiles:
           - ./promtail-values.yaml
   statusCheckDeadlineSeconds: 300
   tolerateFailuresUntilDeadline: true
+
   kubectl: {}
 
 manifests:
@@ -82,43 +84,11 @@ manifests:
       - deployment/base
 
 profiles:
-  - name: adc-1
+  - name: madsummit24
     activation:
-      - kubeContext: workshop-cluster-apidesigncamp-1
+      - kubeContext: workshop-cluster-madsummit24-1
     patches:
       - op: replace
         path: /manifests/kustomize/paths
         value:
-          - deployment/api-design-camp/adc-1
-  - name: adc-2
-    activation:
-      - kubeContext: workshop-cluster-apidesigncamp-2
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-         - deployment/api-design-camp/adc-2
-  - name: adc-3
-    activation:
-      - kubeContext: workshop-cluster-apidesigncamp-3
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/api-design-camp/adc-3
-  - name: adc-4
-    activation:
-      - kubeContext: workshop-cluster-apidesigncamp-4
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/api-design-camp/adc-4
-  - name: adc-5
-    activation:
-      - kubeContext: workshop-cluster-apidesigncamp-5
-    patches:
-      - op: replace
-        path: /manifests/kustomize/paths
-        value:
-          - deployment/api-design-camp/adc-5
+          - deployment/madsummit24/cluster1
