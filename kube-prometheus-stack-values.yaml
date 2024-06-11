@@ -28,7 +28,7 @@ grafana:
     enabled: true
     ingressClassName: nginx # webapprouting.kubernetes.azure.com
     hosts:
-      - grafana.localhost
+      - grafana.ourdomain
       - grafana.ok-cluster.azure.cloud.openknowledge.services
       - grafana.api-workshop-0.azure.cloud.openknowledge.services
       - grafana.api-workshop-1.azure.cloud.openknowledge.services
