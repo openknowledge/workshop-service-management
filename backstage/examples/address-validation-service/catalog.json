@@ -5,7 +5,7 @@
     "metadata": {
       "name": "address-validation-service",
       "links": [{
-        "url": "http://address-validation.ok-cluster.azure.cloud.openknowledge.services/webjars/swagger-ui/index.html",
+        "url": "http://address-validation.api-workshop.azure.cloud.openknowledge.services/webjars/swagger-ui/index.html",
         "title": "Address Validation Service"
       }],
       "annotations": {
@@ -38,7 +38,7 @@
       "type": "openapi",
       "lifecycle": "production",
       "owner": "ok-user-team",
-      "definition": "{\"servers\":[{\"url\":\"http://address-validation.ok-cluster.azure.cloud.openknowledge.services\"}],\"components\":{\"schemas\":{\"Address\":{\"properties\":{\"city\":{\"$ref\":\"#/components/schemas/City\",\"type\":\"object\"},\"street\":{\"$ref\":\"#/components/schemas/Street\",\"type\":\"object\"}},\"type\":\"object\"},\"City\":{\"properties\":{\"zipCode\":{\"type\":\"string\"},\"cityName\":{\"type\":\"string\"}},\"type\":\"object\"},\"Street\":{\"properties\":{\"number\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"openapi\":\"3.0.1\",\"paths\":{\"/valid-addresses\":{\"post\":{\"operationId\":\"validateAddress\",\"parameters\":[],\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"$ref\":\"#/components/schemas/Address\",\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"nullable\":true,\"properties\":{},\"type\":\"object\"}}},\"description\":\"default response\"},\"default\":{\"content\":{\"application/json\":{\"schema\":{\"nullable\":true,\"properties\":{},\"type\":\"object\"}}},\"description\":\"default response\"}}}}}}"
+      "definition": "{\"servers\":[{\"url\":\"http://address-validation.api-workshop.azure.cloud.openknowledge.services\"}],\"components\":{\"schemas\":{\"Address\":{\"properties\":{\"city\":{\"$ref\":\"#/components/schemas/City\",\"type\":\"object\"},\"street\":{\"$ref\":\"#/components/schemas/Street\",\"type\":\"object\"}},\"type\":\"object\"},\"City\":{\"properties\":{\"zipCode\":{\"type\":\"string\"},\"cityName\":{\"type\":\"string\"}},\"type\":\"object\"},\"Street\":{\"properties\":{\"number\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"openapi\":\"3.0.1\",\"paths\":{\"/valid-addresses\":{\"post\":{\"operationId\":\"validateAddress\",\"parameters\":[],\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"$ref\":\"#/components/schemas/Address\",\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"nullable\":true,\"properties\":{},\"type\":\"object\"}}},\"description\":\"default response\"},\"default\":{\"content\":{\"application/json\":{\"schema\":{\"nullable\":true,\"properties\":{},\"type\":\"object\"}}},\"description\":\"default response\"}}}}}}"
     }
   }
 ]
